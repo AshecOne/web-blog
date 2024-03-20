@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "node" # Gunakan versi Node.js terbaru
+cache:
+  npm
+script:
+  - npm run build # Build proyek Next.js Anda
+  - npm run export # Ekspor proyek Next.js sebagai static site
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN # Token yang diatur di Travis CI sebagai env variable
+  local_dir: out # Direktori tempat output dari `next export` disimpan
+  on:
+    branch: main
