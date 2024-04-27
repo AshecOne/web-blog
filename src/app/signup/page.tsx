@@ -31,11 +31,12 @@ const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
 
-  React.useEffect(() => {
-    if (isLoggedIn) {
-      router.replace('/');
-    }
-  }, [isLoggedIn, router]);
+  if (isLoggedIn) {
+    React.useEffect(() => {
+      router.replace("/");
+    }, [router]);
+  }
+  
   if (isLoggedIn) {
     return null;
     }

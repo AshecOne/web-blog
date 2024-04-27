@@ -28,11 +28,11 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
   const router = useRouter();
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
 
-  React.useEffect(() => {
-    if (!isLoggedIn) {
+  if (!isLoggedIn) {
+    React.useEffect(() => {
       router.replace("/signin");
-    }
-  }, [isLoggedIn, router]);
+    }, [router]);
+  }
 
   if (!isLoggedIn) {
     return (

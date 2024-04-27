@@ -21,13 +21,13 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
 
-  React.useEffect(() => {
-    if (isLoggedIn) {
+  if (isLoggedIn) {
+    React.useEffect(() => {
       setTimeout(() => {
         router.replace("/");
       }, 2500);
-    }
-  }, [isLoggedIn, router]);
+    }, [router]);
+  }
 
   const [dataInput, setDataInput] = useState({
     emailOrUsername: "",
@@ -54,11 +54,13 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
           const { username, email } = user;
           toast.success(`Welcome, ${username}`);
           localStorage.setItem("user-token", token);
-          dispatch(setSuccessLogin({
-            id: user.id,
-            username: user.username,
-            email: user.email
-          }));
+          dispatch(
+            setSuccessLogin({
+              id: user.id,
+              username: user.username,
+              email: user.email,
+            })
+          );
         }
       } else {
         throw new Error(response.data.message);
@@ -70,7 +72,7 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
   };
   if (isLoggedIn) {
     return null;
-    }
+  }
   return (
     <div className="flex h-screen bg-orange-200">
       <div className="flex-1 flex justify-center items-center ml-48">

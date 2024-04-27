@@ -39,11 +39,11 @@ const CreateArticle: React.FunctionComponent<ICreateArticleProps> = (props) => {
     createdAt: formatDate(Date.now()),
     category: "",
   });
-  React.useEffect(() => {
-    if (!isLoggedIn) {
+  if (!isLoggedIn) {
+    React.useEffect(() => {
       router.replace("/signin");
-    }
-  }, [isLoggedIn, router]);
+    }, [router]);
+  }
 
   if (!isLoggedIn) {
     return (
