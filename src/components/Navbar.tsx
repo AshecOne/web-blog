@@ -24,10 +24,12 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
   React.useEffect(() => {
     const token = localStorage.getItem("user-token");
     if (token) {
-      dispatch(setSuccessLogin({ id: "", username: "", email: "" }));
+      keepLogin();
+    } else {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, [dispatch]);
+  
 
   React.useEffect(() => {
     dispatch(getCategory());

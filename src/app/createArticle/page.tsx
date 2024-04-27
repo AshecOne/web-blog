@@ -20,7 +20,6 @@ const CreateArticle: React.FunctionComponent<ICreateArticleProps> = (props) => {
   const username = useAppSelector((state) => state.userReducer.username);
   const userInfo = JSON.parse(localStorage.getItem("user-info") || "{}");
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
-
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
     return date.toLocaleDateString("en-US", {
@@ -32,7 +31,14 @@ const CreateArticle: React.FunctionComponent<ICreateArticleProps> = (props) => {
       minute: "2-digit",
     });
   };
-
+  const [article, setArticle] = useState({
+    author: username,
+    title: "",
+    urlImage: "",
+    description: "",
+    createdAt: formatDate(Date.now()),
+    category: "",
+  });
   React.useEffect(() => {
     if (!isLoggedIn) {
       router.replace("/signin");
@@ -46,15 +52,6 @@ const CreateArticle: React.FunctionComponent<ICreateArticleProps> = (props) => {
       </div>
     );
   }
-
-  const [article, setArticle] = useState({
-    author: username,
-    title: "",
-    urlImage: "",
-    description: "",
-    createdAt: formatDate(Date.now()),
-    category: "",
-  });
 
   const onHandlePublish = async () => {
     try {

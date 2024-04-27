@@ -23,7 +23,6 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
   const [articles, setArticles] = React.useState<IArticle[]>([]);
   const [editId, setEditId] = React.useState<string | null>(null);
   const [editData, setEditData] = React.useState<IArticle | null>(null);
-  const username = useAppSelector((state) => state.userReducer.username);
   const category = useAppSelector((state) => state.categoryReducer);
   const userId = useAppSelector((state) => state.userReducer.id);
   const router = useRouter();
@@ -43,14 +42,17 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
     );
   }
 
-  const getArticles = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/articles/${userId}`);
-      setArticles(response.data.data);
-    } catch (error) {
-      console.error("Failed to fetch articles:", error);
-    }
-  };
+  React.useEffect(() => {
+    const getArticles = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/articles/${userId}`);
+        setArticles(response.data.data);
+      } catch (error) {
+        console.error("Failed to fetch articles:", error);
+      }
+    };
+    getArticles();
+  }, [userId]);
 
   const handleEdit = (article: IArticle) => {
     setEditId(article.id);
@@ -90,10 +92,6 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
     setEditId(null);
     setEditData(null);
   };
-
-  React.useEffect(() => {
-    getArticles();
-  }, [username]);
 
   return (
     <div className="flex justify-center items-top pt-16 h-screen bg-white">
