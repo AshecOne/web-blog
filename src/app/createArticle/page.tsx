@@ -5,6 +5,7 @@ import { useAppSelector } from "@/lib/hooks";
 import axios from "axios";
 import { BASE_URL } from "@/utils/helper";
 import { useRouter } from "next/navigation";
+import ClipLoader from "react-spinners/ClipLoader";
 
 interface ICreateArticleProps {
   title?: string;
@@ -15,8 +16,10 @@ interface ICreateArticleProps {
 
 const CreateArticle: React.FunctionComponent<ICreateArticleProps> = (props) => {
   const router = useRouter();
-  const category = useAppSelector((state) => state.categoryReducer);
+  const categories = useAppSelector((state) => state.categoryReducer);
   const username = useAppSelector((state) => state.userReducer.username);
+  const userInfo = JSON.parse(localStorage.getItem("user-info") || "{}");
+  const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
 
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
@@ -31,11 +34,18 @@ const CreateArticle: React.FunctionComponent<ICreateArticleProps> = (props) => {
   };
 
   React.useEffect(() => {
-    setArticle((prevArticle) => ({
-      ...prevArticle,
-      author: username,
-    }));
-  }, [username]);
+    if (!isLoggedIn) {
+      router.replace("/signin");
+    }
+  }, [isLoggedIn, router]);
+
+  if (!isLoggedIn) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader size={150} color={"#123abc"} loading={true} />
+      </div>
+    );
+  }
 
   const [article, setArticle] = useState({
     author: username,
@@ -52,8 +62,13 @@ const CreateArticle: React.FunctionComponent<ICreateArticleProps> = (props) => {
       if (Object.values(article).includes("")) {
         throw new Error("Please input all your data");
       }
+      const { id: authorId } = userInfo;
 
-      const response = await axios.post(BASE_URL + "/articles", article);
+      const response = await axios.post(BASE_URL + "/articles", {
+        ...article,
+        categoryId: article.category,
+        authorId,
+      });
 
       console.log("Response:", response.data);
       alert("Blog is successfully created");
@@ -63,6 +78,13 @@ const CreateArticle: React.FunctionComponent<ICreateArticleProps> = (props) => {
       alert(error);
     }
   };
+
+  React.useEffect(() => {
+    setArticle((prevArticle) => ({
+      ...prevArticle,
+      author: username,
+    }));
+  }, [username]);
 
   return (
     <div className="flex justify-center items-top pt-16 h-screen bg-white">
@@ -97,9 +119,9 @@ const CreateArticle: React.FunctionComponent<ICreateArticleProps> = (props) => {
               className="text-black border border-gray-400 rounded-md h-10 w-full mb-4 p-2"
             >
               <option value="">Select a category</option>
-              {category.map((val, idx) => (
-                <option key={idx} value={val.title}>
-                  {val.title}
+              {categories.map((category, idx) => (
+                <option key={category.id} value={category.id}>
+                  {category.title}
                 </option>
               ))}
             </select>

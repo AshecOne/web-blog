@@ -11,12 +11,16 @@ interface IBlogsProps {}
 
 interface IArticle {
   id: string;
-  author: string;
+  author: {
+    username: string;
+  };
   title: string;
   urlImage: string;
   description: string;
   createdAt: string;
-  category: string;
+  category: {
+    title: string;
+  };
 }
 
 interface ICategory {
@@ -39,7 +43,7 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
   const getArticles = async () => {
     try {
       const response = await axios.get(BASE_URL + `/articles`);
-      setArticles(response.data);
+      setArticles(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -86,7 +90,8 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
               style={{
                 padding: "0.5rem 1rem",
                 borderRadius: "0.25rem",
-                borderBottom: selectedCategory === "" ? "4px solid black" : "none",
+                borderBottom:
+                  selectedCategory === "" ? "4px solid black" : "none",
               }}
               onClick={() => handleCategoryClick("")}
             >
@@ -98,7 +103,8 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
                 style={{
                   padding: "0.5rem 1rem",
                   borderRadius: "0.25rem",
-                  borderBottom: selectedCategory === cat.title ? "4px solid black" : "none",
+                  borderBottom:
+                    selectedCategory === cat.title ? "4px solid black" : "none",
                 }}
                 onClick={() => handleCategoryClick(cat.title)}
               >
@@ -107,7 +113,13 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
             ))}
           </div>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1rem" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "1rem",
+          }}
+        >
           {selectedCategory === ""
             ? articles.map((article) => (
                 <div key={article.id}>
@@ -115,9 +127,9 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
                     imgUrl={article.urlImage}
                     imgAlt={article.title}
                     title={article.title}
-                    writer={article.author}
+                    writer={article.author.username}
                     profilePic="profil.png"
-                    profileAlt={article.author}
+                    profileAlt={article.author.username}
                     date={article.createdAt}
                     sharing=""
                     desc={article.description}
@@ -125,16 +137,18 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
                 </div>
               ))
             : articles
-                .filter((article) => article.category === selectedCategory)
+                .filter(
+                  (article) => article.category.title === selectedCategory
+                )
                 .map((article) => (
                   <div key={article.id}>
                     <Blog
                       imgUrl={article.urlImage}
                       imgAlt={article.title}
                       title={article.title}
-                      writer={article.author}
+                      writer={article.author.username}
                       profilePic="/profil.png"
-                      profileAlt={article.author}
+                      profileAlt={article.author.username}
                       date={article.createdAt}
                       sharing=""
                       desc={article.description}
@@ -143,10 +157,15 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
                 ))}
         </div>
         {selectedCategory !== "" &&
-          articles.filter((article) => article.category === selectedCategory)
-            .length === 0 && (
+          articles.filter(
+            (article) => article.category.title === selectedCategory
+          ).length === 0 && (
             <div className="flex flex-col justify-center items-center mt-6 mb-6">
-              <img src="/empty.png" alt="Article Empty" style={{width: "100px"}} />
+              <img
+                src="/empty.png"
+                alt="Article Empty"
+                style={{ width: "100px" }}
+              />
               <p className="text-gray-500">Article Empty</p>
             </div>
           )}

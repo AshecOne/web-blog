@@ -1,21 +1,31 @@
 "use client";
-import * as React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { BASE_URL } from "@/utils/helper";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setSuccessLogin } from "@/lib/features/userSlice";
+import ClipLoader from "react-spinners/ClipLoader";
 
-
-interface IProfilProps {}
-
-const Profil: React.FunctionComponent<IProfilProps> = (props) => {
+const Profil: React.FunctionComponent = () => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.userReducer);
+  const isLoggedIn = user.isLoggedIn;
+
   const [editMode, setEditMode] = React.useState(false);
   const [editedUser, setEditedUser] = React.useState({
     username: user.username,
   });
-  const [profilePicture, setProfilePicture] = React.useState<string | null>(null);
+  const [profilePicture, setProfilePicture] = React.useState<string | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.replace("/signin");
+    }
+  }, [isLoggedIn, router]);
 
   const handleEdit = () => {
     setEditMode(true);
@@ -53,6 +63,14 @@ const Profil: React.FunctionComponent<IProfilProps> = (props) => {
     }
   };
 
+  if (!isLoggedIn) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader size={150} color={"#123abc"} loading={true} />
+      </div>
+    );
+  }
+
   return (
     <div className="flex justify-center items-top pt-16 h-screen bg-white">
       <div className="w-full bg-white p-8">
@@ -60,7 +78,6 @@ const Profil: React.FunctionComponent<IProfilProps> = (props) => {
         <hr className="mb-6" />
         <div className="flex gap-10">
           <div className="flex-1 space-y-4">
-            <h3 className="text-black">Profil</h3>
             {editMode ? (
               <>
                 <input

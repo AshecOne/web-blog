@@ -1,21 +1,24 @@
-import * as React from 'react';
-import Container from '@/components/Container';
-import Post from '@/components/Post';
-import MangaReads from '@/components/MangaReads';
-import axios from 'axios';
-import { BASE_URL } from '@/utils/helper';
+import * as React from "react";
+import Container from "@/components/Container";
+import Post from "@/components/Post";
+import MangaReads from "@/components/MangaReads";
+import axios from "axios";
+import { BASE_URL } from "@/utils/helper";
 
-interface IArticleProps {
-}
+interface IArticleProps {}
 
 interface IArticle {
   id: string;
-  author: string;
+  author: {
+    username: string;
+  };
   title: string;
   urlImage: string;
   description: string;
   createdAt: string;
-  category: string;
+  category: {
+    title: string;
+  };
 }
 
 interface ICategory {
@@ -24,7 +27,7 @@ interface ICategory {
 }
 
 const Article: React.FunctionComponent<IArticleProps> = (props) => {
-  const [selectedCategory, setSelectedCategory] = React.useState<string>('');
+  const [selectedCategory, setSelectedCategory] = React.useState<string>("");
   const [articles, setArticles] = React.useState<IArticle[]>([]);
   const [categories, setCategories] = React.useState<ICategory[]>([]);
 
@@ -35,7 +38,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
   const getArticles = async () => {
     try {
       const response = await axios.get(BASE_URL + `/articles`);
-      setArticles(response.data);
+      setArticles(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -43,8 +46,8 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
 
   const getCategories = async () => {
     try {
-      const response = await axios.get(BASE_URL + `/category`);
-      setCategories(response.data);
+      const response = await axios.get(BASE_URL + `/categories`);
+      setCategories(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -55,29 +58,43 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
     getArticles();
   }, []);
 
-  const filteredArticles = selectedCategory === ''
-    ? articles
-    : articles.filter((article) => article.category === selectedCategory);
+  const filteredArticles =
+    selectedCategory === ""
+      ? articles
+      : articles.filter(
+          (article) => article.category.title === selectedCategory
+        );
 
   const mainPost = filteredArticles.length > 0 ? filteredArticles[0] : null;
   const subPosts = filteredArticles.slice(1, 5);
   const mangaReads = filteredArticles.slice(0, 3);
 
   return (
-    <section id='article' className="bg-white mt-10 mb-6 pb-5">
+    <section id="article" className="bg-white mt-10 mb-6 pb-5">
       <Container>
-      <div className="flex mt-4 pt-3 border-b border-black" style={{ overflowX: "scroll" }}>
+        <div
+          className="flex mt-4 pt-3 border-b border-black"
+          style={{ overflowX: "scroll" }}
+        >
           <div
             key="all"
-            className={`pb-2 mx-4 px-4 font-bold cursor-pointer ${selectedCategory === '' ? 'border-b-2 border-black' : 'hover:border-b-2 hover:border-black'}`}
-            onClick={() => handleCategoryClick('')}
+            className={`pb-2 mx-4 px-4 font-bold cursor-pointer ${
+              selectedCategory === ""
+                ? "border-b-2 border-black"
+                : "hover:border-b-2 hover:border-black"
+            }`}
+            onClick={() => handleCategoryClick("")}
           >
             All
           </div>
           {categories.map((category) => (
             <div
               key={category.id}
-              className={`pb-2 mx-4 px-4 font-bold cursor-pointer ${selectedCategory === category.title ? 'border-b-2 border-black' : 'hover:border-b-2 hover:border-black'}`}
+              className={`pb-2 mx-4 px-4 font-bold cursor-pointer ${
+                selectedCategory === category.title
+                  ? "border-b-2 border-black"
+                  : "hover:border-b-2 hover:border-black"
+              }`}
               onClick={() => handleCategoryClick(category.title)}
             >
               {category.title}
@@ -85,15 +102,22 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
           ))}
         </div>
 
-        {selectedCategory !== '' && filteredArticles.length === 0 && (
+        {selectedCategory !== "" && filteredArticles.length === 0 && (
           <div className="flex flex-col justify-center items-center mt-6 mb-6">
-            <img src="/empty.png" alt="Article Empty" style={{ width: '100px' }} />
+            <img
+              src="/empty.png"
+              alt="Article Empty"
+              style={{ width: "100px" }}
+            />
             <p className="text-gray-500">Article Empty</p>
           </div>
         )}
 
         {mainPost && subPosts.length > 0 && (
-          <div className="mt-4 pt-3 flex space-x-2" style={{ overflowX: "scroll" }}>
+          <div
+            className="mt-4 pt-3 flex space-x-2"
+            style={{ overflowX: "scroll" }}
+          >
             <Post
               mainPost={{
                 image: mainPost.urlImage,
@@ -107,7 +131,6 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
                 title: post.title,
               }))}
             />
-
             {mangaReads.length > 0 && (
               <MangaReads
                 posts={mangaReads.map((post) => ({

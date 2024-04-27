@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { BASE_URL } from "@/utils/helper";
 
 // mendefinisikan properti/data apa saja yang mungkin nanti disimpan
 interface ICategory {
@@ -29,3 +31,16 @@ const actions = {
 export const { setCategoryAction } = actions;
 
 export default categorySlice.reducer;
+
+// #middleware
+export const getCategory = () => {
+  return async (dispatch: any) => {
+    try {
+      const res = await axios.get(BASE_URL + `/categories`);
+      console.log("Response from middleware", res.data);
+      dispatch(setCategoryAction(res.data.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};

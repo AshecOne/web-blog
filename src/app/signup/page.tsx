@@ -4,6 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { BASE_URL } from "@/utils/helper";
+import { ToastContainer, toast } from "react-toastify";
+import { useAppSelector } from "@/lib/hooks";
+import "react-toastify/dist/ReactToastify.css";
+import ClipLoader from "react-spinners/ClipLoader";
 
 interface ISignUpProps {
   username?: string;
@@ -25,7 +29,16 @@ const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
   console.log(dataRegis);
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
 
+  React.useEffect(() => {
+    if (isLoggedIn) {
+      router.replace('/');
+    }
+  }, [isLoggedIn, router]);
+  if (isLoggedIn) {
+    return null;
+    }
   const onHandleRegis = async () => {
     try {
       console.log(dataRegis);
@@ -35,7 +48,7 @@ const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
       if (dataRegis.password !== dataRegis.confirmPassword) {
         throw new Error("Confirm password is not matched");
       }
-      const emailExists = await checkEmailExists(dataRegis.email);
+      const emailExists = await checkEmailExists(dataRegis.email ?? "");
       if (emailExists) {
         setDataRegis({
           username: "",
@@ -44,25 +57,30 @@ const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
           confirmPassword: "",
         });
         throw new Error("Email has been registered");
-      };
+      }
 
       const { username, email, password, role } = dataRegis;
-      const response = await axios.post(BASE_URL + `/user`, {
+      const response = await axios.post(BASE_URL + `/auth/regis`, {
         username,
         email,
         password,
         role,
       });
       console.log("Response Regis: ", response.data);
-      router.push("/signin");
+
+      toast.success(
+        "Registration successful. Please check your email for verification."
+      );
+
+      router.replace("/signin");
     } catch (error) {
       console.log(error);
       alert(error);
     }
   };
-  const checkEmailExists = async (email:string) => {
+  const checkEmailExists = async (email: string) => {
     try {
-      const response = await axios.get(`${BASE_URL}/user?email=${email}`);
+      const response = await axios.get(`${BASE_URL}/auth?email=${email}`);
       return response.data.length > 0;
     } catch (error) {
       console.error(error);
@@ -82,7 +100,6 @@ const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
           <p className="text-black font-bold">Username</p>
           <input
             type="username"
-            // value={dataRegis.username}
             onChange={(e: any) => {
               const newData = {
                 ...dataRegis,
@@ -95,7 +112,6 @@ const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
           <p className="text-black font-bold">Email</p>
           <input
             type="email"
-            // value={dataRegis.email}
             onChange={(e: any) => {
               const newData = {
                 ...dataRegis,
@@ -109,7 +125,6 @@ const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
           <div className="flex mb-2">
             <input
               type={showPassword ? "text" : "password"}
-              //   value={dataRegis.password}
               onChange={(e: any) => {
                 const newData = {
                   ...dataRegis,
@@ -130,7 +145,6 @@ const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
           <p className="text-black font-bold">Confirm Password</p>
           <input
             type="password"
-            // value={dataRegis.confirmPassword}
             onChange={(e: any) => {
               const newData = {
                 ...dataRegis,
@@ -159,6 +173,7 @@ const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
           </p>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

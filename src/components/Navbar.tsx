@@ -8,9 +8,9 @@ import { useUser } from "@/contexts/UserContext";
 import { useAppDispatch } from "@/lib/hooks";
 import { setSuccessLogin } from "@/lib/features/userSlice";
 import { resetUserState } from "@/lib/features/userSlice";
-import { setCategoryAction } from "@/lib/features/categorySlice";
-import { BASE_URL } from "@/utils/helper";
+import { getCategory } from "@/lib/features/categorySlice";
 import axios from "axios";
+import { BASE_URL } from "@/utils/helper";
 
 interface INavbarProps {}
 
@@ -19,54 +19,57 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = React.useState(true);
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
+  const username = useAppSelector((state) => state.userReducer.username);
 
   React.useEffect(() => {
-    getCategory();
-  }, []);
-  const getCategory = async () => {
-    try {
-      const response = await axios.get(BASE_URL + `/category`);
-      dispatch(setCategoryAction(response.data));
-      
-    } catch (error) {
-      console.log(error);
+    const token = localStorage.getItem("user-token");
+    if (token) {
+      dispatch(setSuccessLogin({ id: "", username: "", email: "" }));
     }
-  };
+    setIsLoading(false);
+  }, [dispatch]);
 
-  // const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-  const { username, setUsername } = useUser();
-  const name = useAppSelector((state) => {
-    console.log("selector redux, ", state.userReducer);
-    return state.userReducer.username;
-  });
-  
+  React.useEffect(() => {
+    dispatch(getCategory());
+  }, [dispatch]);
 
   const handleSignOut = () => {
-    localStorage.removeItem("success-login"); // Hapus userId dari localStorage
-    dispatch(resetUserState()); // Mengatur ulang state Redux
-    setUsername(null); // Mengatur ulang konteks lokal pengguna (jika digunakan)
-    router.push("/signin");
+    localStorage.removeItem("user-token");
+    dispatch(resetUserState());
+    router.push("/");
   };
 
-  React.useEffect(() => {
-    keepLogin();
-  }, []);
   const keepLogin = async () => {
     try {
-      // 1. Mengakses data id/token dari localStorage
-      const userId = localStorage.getItem("success-login");
-      // 2. Jika ada, maka jalankan fungsi axios untuk mengambil data user berdasarkan id
-      if (userId) {
-        const response = await axios.get(`${BASE_URL}/user/${userId}`);
-        // 3. Setelah dapat response, simpan response tersebut ke global state redux
-        dispatch(setSuccessLogin(response.data));
+      const token = localStorage.getItem("user-token");
+      if (token) {
+        const response = await axios.get(BASE_URL + "/auth/keeplogin", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.data.success) {
+          const { id, username, email } = response.data.data;
+          dispatch(setSuccessLogin({ id, username, email }));
+        } else {
+          localStorage.removeItem("user-token");
+          dispatch(resetUserState());
+        }
       }
     } catch (error) {
       console.log(error);
     } finally {
-      setIsLoading(false); // Set isLoading menjadi false setelah proses loading selesai
+      setIsLoading(false);
     }
   };
+
+  React.useEffect(() => {
+    keepLogin();
+    const intervalId = setInterval(keepLogin, 10 * 60 * 1000);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   return (
     <section
@@ -85,8 +88,6 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
             />
           </div>
           <ul className="hidden md:flex gap-4">
-            
-
             <li className="text-white hover:text-gray-300 cursor-pointer">
               DESTINATIONS
             </li>
@@ -140,8 +141,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
             </div>
           ) : isLoggedIn ? (
             <div className="relative group mt-11 mb-11 border px-4 py-2 bg-white bg-opacity-20 hover:bg-gray-200  mr-6 inline-block">
-              <p className="font-bold text-black cursor-pointer">{name}</p>
-              {/* Dropdown menu, href disesuaikan dengan routing aplikasi Anda */}
+              <p className="font-bold text-black cursor-pointer">{username}</p>
               <div className="absolute left-1/2 transform -translate-x-1/2 py-2 w-48 bg-white rounded-md shadow-xl z-20 hidden group-hover:block">
                 <a
                   href="/profile"
@@ -172,37 +172,6 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
               Log In
             </button>
           )}
-          {/* <div className="relative">
-            <p
-              className="font-bold text-white cursor-pointer"
-              onClick={() => setIsDropdownVisible(!isDropdownVisible)} 
-            >
-              {username}
-            </p>
-            {isDropdownVisible && (
-              <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
-                <a
-                  href="/profile"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                >
-                  Profile
-                </a>
-                <a
-                  href="/create-article"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                >
-                  Create Article
-                </a>
-                <div className="h-[1px] bg-black my-2 mx-auto w-[80%]"></div>
-                <a
-                  href="/sign-out"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                >
-                  Sign Out
-                </a>
-              </div>
-            )}
-            </div> */}
         </nav>
       </Container>
     </section>

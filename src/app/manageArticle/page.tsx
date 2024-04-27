@@ -3,6 +3,8 @@ import * as React from "react";
 import axios from "axios";
 import { useAppSelector } from "@/lib/hooks";
 import { BASE_URL } from "@/utils/helper";
+import { useRouter } from "next/navigation";
+import ClipLoader from "react-spinners/ClipLoader";
 
 interface IManageArticleProps {}
 
@@ -14,6 +16,7 @@ interface IArticle {
   description: string;
   createdAt: string;
   category: string;
+  categoryId: string;
 }
 
 const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
@@ -22,19 +25,30 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
   const [editData, setEditData] = React.useState<IArticle | null>(null);
   const username = useAppSelector((state) => state.userReducer.username);
   const category = useAppSelector((state) => state.categoryReducer);
+  const userId = useAppSelector((state) => state.userReducer.id);
+  const router = useRouter();
+  const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
 
   React.useEffect(() => {
-    getArticles();
-  }, [username]);
+    if (!isLoggedIn) {
+      router.replace("/signin");
+    }
+  }, [isLoggedIn, router]);
+
+  if (!isLoggedIn) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader size={150} color={"#123abc"} loading={true} />
+      </div>
+    );
+  }
 
   const getArticles = async () => {
     try {
-      const response = await axios.get(
-        BASE_URL + `/articles?author=${username}`
-      );
-      setArticles(response.data);
+      const response = await axios.get(`${BASE_URL}/articles/${userId}`);
+      setArticles(response.data.data);
     } catch (error) {
-      console.log(error);
+      console.error("Failed to fetch articles:", error);
     }
   };
 
@@ -46,10 +60,13 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
   const handleSave = async () => {
     if (editData) {
       try {
-        await axios.put(BASE_URL + `/articles/${editData.id}`, editData);
+        const response = await axios.put(
+          BASE_URL + `/articles/${editData.id}`,
+          editData
+        );
         setArticles(
           articles.map((article) =>
-            article.id === editData.id ? { ...editData } : article
+            article.id === editData.id ? response.data.data : article
           )
         );
         setEditId(null);
@@ -60,19 +77,23 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
     }
   };
 
+  const handleDelete = async (articleId: string) => {
+    try {
+      await axios.delete(BASE_URL + `/articles/${articleId}`);
+      setArticles(articles.filter((article) => article.id !== articleId));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleCancel = () => {
     setEditId(null);
     setEditData(null);
   };
 
-  const handleDelete = async (articleId: string) => {
-    try {
-      await axios.delete(BASE_URL + `/articles/${articleId}`);
-      getArticles();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  React.useEffect(() => {
+    getArticles();
+  }, [username]);
 
   return (
     <div className="flex justify-center items-top pt-16 h-screen bg-white">
@@ -148,15 +169,15 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
                   </label>
                   <select
                     id="category"
-                    value={editData?.category || ""}
+                    value={editData?.categoryId || ""}
                     onChange={(e) =>
-                      setEditData({ ...editData!, category: e.target.value })
+                      setEditData({ ...editData!, categoryId: e.target.value })
                     }
                     className="text-black border border-gray-400 rounded-md h-10 w-full mb-4 p-2"
                   >
                     <option value="">Select a category</option>
-                    {category.map((val, idx) => (
-                      <option key={idx} value={val.title}>
+                    {category.map((val) => (
+                      <option key={val.id} value={val.id}>
                         {val.title}
                       </option>
                     ))}
