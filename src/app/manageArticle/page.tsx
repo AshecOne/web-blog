@@ -28,11 +28,15 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
   const router = useRouter();
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
 
+  const redirectToSignIn = React.useCallback(() => {
+    router.replace("/signin");
+  }, [router]);
+
   React.useEffect(() => {
     if (!isLoggedIn) {
-      router.replace("/signin");
+      redirectToSignIn();
     }
-  }, [isLoggedIn, router]);
+  }, [isLoggedIn, redirectToSignIn]);
 
   if (!isLoggedIn) {
     return (

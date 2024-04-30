@@ -39,11 +39,16 @@ const CreateArticle: React.FunctionComponent<ICreateArticleProps> = (props) => {
     createdAt: formatDate(Date.now()),
     category: "",
   });
+  
+  const redirectToSignIn = React.useCallback(() => {
+    router.replace("/signin");
+  }, [router]);
+
   React.useEffect(() => {
     if (!isLoggedIn) {
-      router.replace("/signin");
+      redirectToSignIn();
     }
-  }, [isLoggedIn, router]);
+  }, [isLoggedIn, redirectToSignIn]);
 
   if (!isLoggedIn) {
     return (
