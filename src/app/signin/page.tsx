@@ -9,14 +9,13 @@ import { setSuccessLogin } from "@/lib/features/userSlice";
 import { useAppSelector } from "@/lib/hooks";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ClipLoader from "react-spinners/ClipLoader";
 
 interface ISignInProps {
   emailOrUsername: string;
   password: string;
 }
 
-const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
+const SignIn: React.FunctionComponent = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
@@ -27,7 +26,7 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
         router.replace("/");
       }, 2500);
     }
-  }, [isLoggedIn,router]);
+  }, [isLoggedIn, router]);
 
   const [dataInput, setDataInput] = useState({
     emailOrUsername: "",
@@ -70,9 +69,11 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
       setDataInput({ emailOrUsername: "", password: "" });
     }
   };
+
   if (isLoggedIn) {
     return null;
   }
+
   return (
     <div className="flex h-screen bg-orange-200">
       <div className="flex-1 flex justify-center items-center ml-48">

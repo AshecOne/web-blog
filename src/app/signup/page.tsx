@@ -7,7 +7,6 @@ import { BASE_URL } from "@/utils/helper";
 import { ToastContainer, toast } from "react-toastify";
 import { useAppSelector } from "@/lib/hooks";
 import "react-toastify/dist/ReactToastify.css";
-import ClipLoader from "react-spinners/ClipLoader";
 
 interface ISignUpProps {
   username?: string;
@@ -17,7 +16,7 @@ interface ISignUpProps {
   role?: string;
 }
 
-const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
+const SignUp: React.FunctionComponent = () => {
   const router = useRouter();
   const [dataRegis, setDataRegis] = useState<ISignUpProps>({
     username: "",
@@ -27,7 +26,6 @@ const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
     role: "author",
   });
   console.log(dataRegis);
-
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
 
@@ -40,6 +38,7 @@ const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
   if (isLoggedIn) {
     return null;
   }
+
   const onHandleRegis = async () => {
     try {
       console.log(dataRegis);
@@ -59,7 +58,6 @@ const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
         });
         throw new Error("Email has been registered");
       }
-
       const { username, email, password, role } = dataRegis;
       const response = await axios.post(BASE_URL + `/auth/regis`, {
         username,
@@ -68,17 +66,16 @@ const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
         role,
       });
       console.log("Response Regis: ", response.data);
-
       toast.success(
         "Registration successful. Please check your email for verification."
       );
-
       router.replace("/signin");
     } catch (error) {
       console.log(error);
       alert(error);
     }
   };
+
   const checkEmailExists = async (email: string) => {
     try {
       const response = await axios.get(`${BASE_URL}/auth?email=${email}`);
@@ -88,6 +85,7 @@ const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
       return false;
     }
   };
+
   return (
     <div className="flex h-screen bg-orange-200">
       <div className="flex-1 flex justify-center items-center ml-48">

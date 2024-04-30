@@ -4,7 +4,6 @@ import { IoSearchOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import Container from "./Container";
 import { useAppSelector } from "@/lib/hooks";
-import { useUser } from "@/contexts/UserContext";
 import { useAppDispatch } from "@/lib/hooks";
 import { setSuccessLogin } from "@/lib/features/userSlice";
 import { resetUserState } from "@/lib/features/userSlice";
