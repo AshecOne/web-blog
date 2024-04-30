@@ -14,7 +14,7 @@ interface ICreateArticleProps {
   createdAt?: string;
 }
 
-const CreateArticle: React.FunctionComponent<ICreateArticleProps> = (props) => {
+const CreateArticle: React.FunctionComponent = () => {
   const router = useRouter();
   const categories = useAppSelector((state) => state.categoryReducer);
   const username = useAppSelector((state) => state.userReducer.username);
@@ -41,7 +41,7 @@ const CreateArticle: React.FunctionComponent<ICreateArticleProps> = (props) => {
     createdAt: formatDate(Date.now()),
     category: "",
   });
-  
+
   React.useEffect(() => {
     setArticle((prevArticle) => ({
       ...prevArticle,
