@@ -21,11 +21,11 @@ const Profil: React.FunctionComponent = () => {
     null
   );
 
-  if (!isLoggedIn) {
-    React.useEffect(() => {
+  React.useEffect(() => {
+    if (!isLoggedIn) {
       router.replace("/signin");
-    }, [router]);
-  }  
+    }
+  }, [isLoggedIn, router]); 
 
   const handleEdit = () => {
     setEditMode(true);

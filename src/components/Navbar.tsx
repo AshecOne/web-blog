@@ -71,7 +71,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+  }, [keepLogin]);
 
   return (
     <section

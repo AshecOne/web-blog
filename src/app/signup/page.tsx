@@ -31,15 +31,15 @@ const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
 
-  if (isLoggedIn) {
-    React.useEffect(() => {
+  React.useEffect(() => {
+    if (isLoggedIn) {
       router.replace("/");
-    }, [router]);
-  }
-  
+    }
+  }, [router]);
+
   if (isLoggedIn) {
     return null;
-    }
+  }
   const onHandleRegis = async () => {
     try {
       console.log(dataRegis);

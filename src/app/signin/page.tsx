@@ -21,13 +21,13 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
 
-  if (isLoggedIn) {
-    React.useEffect(() => {
+  React.useEffect(() => {
+    if (isLoggedIn) {
       setTimeout(() => {
         router.replace("/");
       }, 2500);
-    }, [router]);
-  }
+    }
+  }, [router]);
 
   const [dataInput, setDataInput] = useState({
     emailOrUsername: "",
