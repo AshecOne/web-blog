@@ -21,38 +21,43 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
   const username = useAppSelector((state) => state.userReducer.username);
 
   React.useEffect(() => {
-    const token = localStorage.getItem("user-token");
-    if (token) {
-      keepLogin();
-    } else {
-      setIsLoading(false);
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem("user-token");
+      if (token) {
+        keepLogin();
+      } else {
+        setIsLoading(false);
+      }
     }
   }, [dispatch]);
-  
 
   React.useEffect(() => {
     dispatch(getCategory());
   }, [dispatch]);
 
   const handleSignOut = () => {
-    localStorage.removeItem("user-token");
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem("user-token");
+    }
     dispatch(resetUserState());
     router.push("/");
   };
 
   const keepLogin = React.useCallback(async () => {
     try {
-      const token = localStorage.getItem("user-token");
-      if (token) {
-        const response = await axios.get(BASE_URL + "/auth/keeplogin", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (response.data.success) {
-          const { id, username, email } = response.data.data;
-          dispatch(setSuccessLogin({ id, username, email }));
-        } else {
-          localStorage.removeItem("user-token");
-          dispatch(resetUserState());
+      if (typeof window !== 'undefined') {
+        const token = localStorage.getItem("user-token");
+        if (token) {
+          const response = await axios.get(BASE_URL + "/auth/keeplogin", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          if (response.data.success) {
+            const { id, username, email } = response.data.data;
+            dispatch(setSuccessLogin({ id, username, email }));
+          } else {
+            localStorage.removeItem("user-token");
+            dispatch(resetUserState());
+          }
         }
       }
     } catch (error) {

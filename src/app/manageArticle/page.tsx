@@ -40,7 +40,7 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
     getArticles();
   }, [userId]);
 
-  if (!isLoggedIn) {
+  if (typeof window !== 'undefined' && !isLoggedIn) {
     router.replace("/signin");
     return null;
   }

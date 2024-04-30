@@ -18,7 +18,7 @@ const CreateArticle: React.FunctionComponent = () => {
   const router = useRouter();
   const categories = useAppSelector((state) => state.categoryReducer);
   const username = useAppSelector((state) => state.userReducer.username);
-  const userInfo = JSON.parse(localStorage.getItem("user-info") || "{}");
+  const userInfo = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("user-info") || "{}") : {};
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
 
   const formatDate = (timestamp: number) => {

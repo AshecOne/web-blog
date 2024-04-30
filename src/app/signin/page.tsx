@@ -52,7 +52,9 @@ const SignIn: React.FunctionComponent = () => {
         if (user && token) {
           const { username, email } = user;
           toast.success(`Welcome, ${username}`);
-          localStorage.setItem("user-token", token);
+          if (typeof window !== 'undefined') {
+            localStorage.setItem("user-token", token);
+          }
           dispatch(
             setSuccessLogin({
               id: user.id,
