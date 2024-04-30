@@ -28,6 +28,18 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
   const router = useRouter();
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
 
+  React.useEffect(() => {
+    const getArticles = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/articles/${userId}`);
+        setArticles(response.data.data);
+      } catch (error) {
+        console.error("Failed to fetch articles:", error);
+      }
+    };
+    getArticles();
+  }, [userId]);
+
   if (!isLoggedIn) {
     router.replace("/signin");
     return null;
@@ -40,18 +52,6 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
       </div>
     );
   }
-
-  React.useEffect(() => {
-    const getArticles = async () => {
-      try {
-        const response = await axios.get(`${BASE_URL}/articles/${userId}`);
-        setArticles(response.data.data);
-      } catch (error) {
-        console.error("Failed to fetch articles:", error);
-      }
-    };
-    getArticles();
-  }, [userId]);
 
   const handleEdit = (article: IArticle) => {
     setEditId(article.id);

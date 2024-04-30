@@ -20,6 +20,7 @@ const CreateArticle: React.FunctionComponent<ICreateArticleProps> = (props) => {
   const username = useAppSelector((state) => state.userReducer.username);
   const userInfo = JSON.parse(localStorage.getItem("user-info") || "{}");
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
+
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
     return date.toLocaleDateString("en-US", {
@@ -31,6 +32,7 @@ const CreateArticle: React.FunctionComponent<ICreateArticleProps> = (props) => {
       minute: "2-digit",
     });
   };
+
   const [article, setArticle] = useState({
     author: username,
     title: "",
@@ -40,6 +42,13 @@ const CreateArticle: React.FunctionComponent<ICreateArticleProps> = (props) => {
     category: "",
   });
   
+  React.useEffect(() => {
+    setArticle((prevArticle) => ({
+      ...prevArticle,
+      author: username,
+    }));
+  }, [username]);
+
   if (!isLoggedIn) {
     router.replace("/signin");
     return null;
@@ -75,13 +84,6 @@ const CreateArticle: React.FunctionComponent<ICreateArticleProps> = (props) => {
       alert(error);
     }
   };
-
-  React.useEffect(() => {
-    setArticle((prevArticle) => ({
-      ...prevArticle,
-      author: username,
-    }));
-  }, [username]);
 
   return (
     <div className="flex justify-center items-top pt-16 h-screen bg-white">
