@@ -84,7 +84,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
         <nav className="flex justify-between items-center h-[4rem]">
           <div className="flex items-center">
             <img
-              src="/logo.png"
+              src="https://ashecone.github.io/web-blog/logo.png"
               alt="Logo"
               className="cursor-pointer"
               style={{ maxWidth: "300px", height: "auto" }}

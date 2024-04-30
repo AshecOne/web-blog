@@ -21,27 +21,27 @@ const Booking: React.FunctionComponent<IBookingProps> = (props) => {
         </div>
         <div className="flex justify-center flex-wrap pb-5 mb-6 pt-1 mt-2" style={{ overflowX: "scroll", flexWrap: "nowrap" }}>
         <Destination
-          img="/dominican.jpg"
+          img="https://ashecone.github.io/web-blog/dominican.jpg"
           name="dominican"
           about="Dominican Republic"
         />
         <Destination
-          img="/desert.jpg"
+          img="https://ashecone.github.io/web-blog/desert.jpg"
           name="desert"
           about="Maecenas Tincidunt"
         />
         <Destination
-          img="/tower.webp"
+          img="https://ashecone.github.io/web-blog/tower.webp"
           name="tower"
           about="Dominican Republic"
         />
         <Destination
-          img="/road2.jpg"
+          img="https://ashecone.github.io/web-blog/road2.jpg"
           name="road2"
           about="Dominican Republic"
         />
         <Destination
-          img="/road.jpg"
+          img="https://ashecone.github.io/web-blog/road.jpg"
           name="road"
           about="Dominican Republic"
         />

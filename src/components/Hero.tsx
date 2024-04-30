@@ -12,7 +12,7 @@ const Hero: React.FunctionComponent<IHeroProps> = (props) => {
       id="hero"
       className="relative h-screen flex items-center justify-center text-center"
       style={{
-        backgroundImage: 'url("/hero.jpg!d")',
+        backgroundImage: 'url("https://ashecone.github.io/web-blog/hero.jpg!d")',
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

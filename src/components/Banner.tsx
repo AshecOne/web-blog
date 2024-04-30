@@ -8,7 +8,7 @@ const Banner: React.FunctionComponent<IBannerProps> = (props) => {
     <div
           className="relative flex items-center justify-center text-white text-center h-[400px]"
           style={{
-            backgroundImage: 'url("/beach.jpg")',
+            backgroundImage: 'url("https://ashecone.github.io/web-blog/beach.jpg")',
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
