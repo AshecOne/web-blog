@@ -35,7 +35,7 @@ const SignUp: React.FunctionComponent<ISignUpProps> = (props) => {
     if (isLoggedIn) {
       router.replace("/");
     }
-  }, [router]);
+  }, [isLoggedIn, router]);
 
   if (isLoggedIn) {
     return null;

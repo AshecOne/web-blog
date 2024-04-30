@@ -27,7 +27,7 @@ const SignIn: React.FunctionComponent<ISignInProps> = (props) => {
         router.replace("/");
       }, 2500);
     }
-  }, [router]);
+  }, [isLoggedIn,router]);
 
   const [dataInput, setDataInput] = useState({
     emailOrUsername: "",

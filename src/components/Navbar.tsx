@@ -41,14 +41,12 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
     router.push("/");
   };
 
-  const keepLogin = async () => {
+  const keepLogin = React.useCallback(async () => {
     try {
       const token = localStorage.getItem("user-token");
       if (token) {
         const response = await axios.get(BASE_URL + "/auth/keeplogin", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
         if (response.data.success) {
           const { id, username, email } = response.data.data;
@@ -63,8 +61,8 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
     } finally {
       setIsLoading(false);
     }
-  };
-
+  }, [dispatch]);
+  
   React.useEffect(() => {
     keepLogin();
     const intervalId = setInterval(keepLogin, 10 * 60 * 1000);
