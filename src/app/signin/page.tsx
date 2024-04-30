@@ -21,7 +21,7 @@ const SignIn: React.FunctionComponent = () => {
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
 
   React.useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && typeof window !== "undefined") {
       setTimeout(() => {
         router.replace("/");
       }, 2500);
@@ -52,7 +52,7 @@ const SignIn: React.FunctionComponent = () => {
         if (user && token) {
           const { username, email } = user;
           toast.success(`Welcome, ${username}`);
-          if (typeof window !== 'undefined') {
+          if (typeof window !== "undefined") {
             localStorage.setItem("user-token", token);
           }
           dispatch(
@@ -75,7 +75,6 @@ const SignIn: React.FunctionComponent = () => {
   if (isLoggedIn) {
     return null;
   }
-
   return (
     <div className="flex h-screen bg-orange-200">
       <div className="flex-1 flex justify-center items-center ml-48">

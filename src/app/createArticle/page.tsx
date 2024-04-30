@@ -49,10 +49,11 @@ const CreateArticle: React.FunctionComponent = () => {
     }));
   }, [username]);
 
-  if (!isLoggedIn) {
-    router.replace("/signin");
-    return null;
-  }
+  React.useEffect(() => {
+    if (!isLoggedIn && typeof window !== 'undefined') {
+      router.replace("/signin");
+    }
+  }, [isLoggedIn, router]);
 
   if (!isLoggedIn) {
     return (
@@ -69,16 +70,16 @@ const CreateArticle: React.FunctionComponent = () => {
         throw new Error("Please input all your data");
       }
       const { id: authorId } = userInfo;
-
       const response = await axios.post(BASE_URL + "/articles", {
         ...article,
         categoryId: article.category,
         authorId,
       });
-
       console.log("Response:", response.data);
       alert("Blog is successfully created");
-      router.replace("/");
+      if (typeof window !== 'undefined') {
+        router.replace("/");
+      }
     } catch (error) {
       console.log("Error:", error);
       alert(error);
