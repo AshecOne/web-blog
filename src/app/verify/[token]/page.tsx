@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import axios from "axios";
 import { BASE_URL } from "@/utils/helper";
 import { ToastContainer, toast } from "react-toastify";
@@ -8,8 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const VerifyEmail: React.FunctionComponent = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token") || ""; // Extract token from URL
+  const { token } = useParams(); 
   const [otp, setOtp] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
 

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import axios from 'axios';
 import { BASE_URL } from '@/utils/helper';
 import { ToastContainer, toast } from 'react-toastify';
@@ -8,8 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const VerifyPassword: React.FunctionComponent = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token") || ""; // Extract token from URL
+  const { token } = useParams();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -20,8 +19,9 @@ const VerifyPassword: React.FunctionComponent = () => {
     }
 
     try {
+
       const response = await axios.post(
-        `${BASE_URL}/auth/verify-password/${token}`,
+        `${BASE_URL}/verify-password/${token}`,
         { password },
         {
           headers: {
