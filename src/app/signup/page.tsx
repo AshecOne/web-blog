@@ -96,7 +96,7 @@ const SignUp: React.FunctionComponent = () => {
             style={{ maxWidth: "250px", height: "auto" }}
           />
           <img
-            src="/signup.png"
+            src="https://ashecone.github.io/web-blog/signup.png"
             alt="Sign up"
             style={{ maxWidth: "250px", height: "auto" }}
           />

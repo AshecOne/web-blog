@@ -1,24 +1,15 @@
+"use client";
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { BASE_URL } from '@/utils/helper';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
-interface VerifyPasswordProps {
-  token: string;
-}
-
-export async function getServerSideProps(
-  context: GetServerSidePropsContext
-): Promise<GetServerSidePropsResult<VerifyPasswordProps>> {
-  const { token } = context.params as { token: string };
-  return { props: { token } };
-}
-
-const VerifyPassword: React.FunctionComponent<VerifyPasswordProps> = ({ token }) => {
+const VerifyPassword: React.FunctionComponent = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token") || ""; // Extract token from URL
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
