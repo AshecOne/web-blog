@@ -1,16 +1,26 @@
-"use client";
 import React, { useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 import { BASE_URL } from '@/utils/helper';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
-const VerifyPassword: React.FunctionComponent = () => {
+interface VerifyPasswordProps {
+  token: string;
+}
+
+export async function getServerSideProps(
+  context: GetServerSidePropsContext
+): Promise<GetServerSidePropsResult<VerifyPasswordProps>> {
+  const { token } = context.params as { token: string };
+  return { props: { token } };
+}
+
+const VerifyPassword: React.FunctionComponent<VerifyPasswordProps> = ({ token }) => {
   const router = useRouter();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const token = useParams().token;
 
   const handleResetPassword = async () => {
     if (password !== confirmPassword) {
@@ -19,17 +29,20 @@ const VerifyPassword: React.FunctionComponent = () => {
     }
 
     try {
-      const response = await axios.post(`${BASE_URL}/auth/verify-password/${token}`, {
-        password,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        `${BASE_URL}/auth/verify-password/${token}`,
+        { password },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       toast.success("Password reset successfully. You can now log in.");
       router.push('/signin');
     } catch (error) {
+      console.error(error);
       toast.error("Failed to reset password. Please try again.");
     }
   };

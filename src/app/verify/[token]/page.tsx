@@ -1,25 +1,29 @@
-"use client";
 import React, { useState } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/router";
 import axios from "axios";
 import { BASE_URL } from "@/utils/helper";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
-const VerifyEmail: React.FunctionComponent = () => {
-  const router = useRouter();
-  const searchParams = useParams();
-  console.log(searchParams);
-  
-  const token = searchParams.token;
+interface VerifyEmailProps {
+  token: string;
+}
+
+export async function getServerSideProps(
+  context: GetServerSidePropsContext
+): Promise<GetServerSidePropsResult<VerifyEmailProps>> {
+  const { token } = context.params as { token: string };
+  return { props: { token } };
+}
+
+const VerifyEmail: React.FunctionComponent<VerifyEmailProps> = ({ token }) => {
+  const router = useRouter(); 
   const [otp, setOtp] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
 
-  
   const handleVerifyEmail = async () => {
     setIsVerifying(true);
-    console.log(token);
-    
     try {
       const response = await axios.post(
         `${BASE_URL}/auth/verify-email/${token}`,
@@ -30,11 +34,10 @@ const VerifyEmail: React.FunctionComponent = () => {
           },
         }
       );
-      console.log("Email verification response: ", response.data);
       toast.success("Email verified successfully. You can now log in.");
       router.push("/signin");
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Invalid verification OTP.");
       setIsVerifying(false);
     }
