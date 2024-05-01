@@ -21,10 +21,10 @@ const Hero: React.FunctionComponent<IHeroProps> = (props) => {
       <div className="absolute inset-0 bg-black opacity-40"></div>
       <Container>
         <div className="relative z-10 text-white">
-          <h1 className="text-4xl font-bold mb-2 shadow-lg">
+          <h1 className="text-4xl font-bold mb-2">
             Inspiration for Travel by Real People
           </h1>
-          <p className="text-xl mb-4 shadow-lg">Book smart, travel simple</p>
+          <p className="text-xl mb-4">Book smart, travel simple</p>
           <button
             onClick={() => router.push("/signin")}
             className="bg-white text-black hover:bg-gray-500 hover:text-white transition duration-300 font-semibold py-2 px-4 rounded"

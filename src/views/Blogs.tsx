@@ -66,21 +66,21 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
   return (
     <section id="blogs" className="bg-white pt-10 pb-6">
       <Container>
-        <div className="flex relative justify-center items-center p-2">
-          <div className="flex items-center px-2">
-            <FaFacebookF className="cursor-pointer text-gray-600" />
+        <div className="flex mx-auto space-x-6 relative justify-center items-center p-2">
+          <div className="flex items-center px-3">
+            <FaFacebookF className="cursor-pointer text-gray-600 mr-2" />
             <p className="text-gray-600">3.7M</p>
           </div>
-          <div className="flex items-center px-2">
-            <FaInstagram className="cursor-pointer text-gray-600" />
+          <div className="flex items-center px-3">
+            <FaInstagram className="cursor-pointer text-gray-600 mr-2" />
             <p className="text-gray-600">2.4M</p>
           </div>
-          <div className="flex items-center px-2">
-            <FaTwitter className="cursor-pointer text-gray-600" />
+          <div className="flex items-center px-3">
+            <FaTwitter className="cursor-pointer text-gray-600 mr-2" />
             <p className="text-gray-600">3.7M</p>
           </div>
-          <div className="flex items-center px-2">
-            <FaYoutube className="cursor-pointer text-gray-600" />
+          <div className="flex items-center px-3">
+            <FaYoutube className="cursor-pointer text-gray-600 mr-2" />
             <p className="text-gray-600">2.4M</p>
           </div>
         </div>

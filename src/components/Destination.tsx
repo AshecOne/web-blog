@@ -21,13 +21,13 @@ const Destination: React.FunctionComponent<IDestinationProps> = ({
       <img
         src={img}
         alt={name}
-        className={`w-[250px] h-[200px] transition-all  duration-300 ease-in-out ${
+        className={`destination-image m:w-[260px] m:h-[140px] md:w-[160px] md:h-[170px] lg:w-[250px] lg:h-[200px] transition-all duration-300 ease-in-out ${
           isHovered ? "scale-110" : ""
         }`}
       />
       <span
-        className={`absolute inset-0 flex items-center justify-center font-bold text-white transition-all duration-300 ease-in-out ${
-          isHovered ? "text-xl" : "text-md"
+        className={`absolute inset-0 flex text-center items-center justify-center font-bold text-white transition-all duration-300 ease-in-out ${
+          isHovered ? "lg:text-xl text-md" : "text-xs lg:text-md"
         }`}
       >
         {about}

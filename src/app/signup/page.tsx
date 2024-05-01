@@ -87,38 +87,43 @@ const SignUp: React.FunctionComponent = () => {
   };
 
   return (
-    <div className="flex h-screen bg-orange-200">
-      <div className="flex-1 flex justify-center items-center ml-48">
-        <div className="border-2 border-gray-400 bg-purple-500 h-[500px] w-[350px]" />
+    <div className="flex flex-col md:flex-row h-screen bg-orange-200">
+      <div className="md:flex-1 flex justify-center items-center md:ml-48">
+        <div className="hidden md:flex md:flex-col justify-center items-center tex border-2 border-gray-400 bg-purple-500 h-[500px] w-[350px]">
+          <img
+            src="https://ashecone.github.io/web-blog/logo.png"
+            alt="Logo"
+            style={{ maxWidth: "250px", height: "auto" }}
+          />
+          <img
+            src="/signup.png"
+            alt="Sign up"
+            style={{ maxWidth: "250px", height: "auto" }}
+          />
+        </div>
       </div>
-      <div className="flex-1 flex justify-center items-center mr-48">
-        <div>
-          <h1 className="text-2xl font-bold mb-4 text-black">
+      <div className="flex-1 flex justify-center items-center md:mr-48 p-4">
+        <div className="w-full max-w-md">
+          <h1 className="text-2xl font-bold mb-4 text-black text-center">
             Form Registration
           </h1>
           <p className="text-black font-bold">Username</p>
           <input
             type="username"
             onChange={(e: any) => {
-              const newData = {
-                ...dataRegis,
-                username: e.target.value,
-              };
+              const newData = { ...dataRegis, username: e.target.value };
               setDataRegis(newData);
             }}
-            className="text-black border border-gray-400 rounded-md h-10 w-[300px] mb-2 p-2"
+            className="text-black border border-gray-400 rounded-md h-10 w-full mb-2 p-2"
           />
           <p className="text-black font-bold">Email</p>
           <input
             type="email"
             onChange={(e: any) => {
-              const newData = {
-                ...dataRegis,
-                email: e.target.value,
-              };
+              const newData = { ...dataRegis, email: e.target.value };
               setDataRegis(newData);
             }}
-            className="text-black border border-gray-400 rounded-md h-10 w-[300px] mb-2 p-2"
+            className="text-black border border-gray-400 rounded-md h-10 w-full mb-2 p-2"
           />
           <p className="text-black font-bold">Password</p>
           <div className="flex mb-2">
@@ -131,9 +136,8 @@ const SignUp: React.FunctionComponent = () => {
                 };
                 setDataRegis(newData);
               }}
-              className="text-black border border-gray-400 rounded-md w-[300px] h-10 mr-2 p-2"
+              className="text-black border border-gray-400 rounded-md w-full h-10 mr-2 p-2"
             />
-
             <button
               onClick={() => setShowPassword(!showPassword)}
               className="border border-gray-400 rounded-md text-black w-20 bg-white h-10"
@@ -145,26 +149,25 @@ const SignUp: React.FunctionComponent = () => {
           <input
             type="password"
             onChange={(e: any) => {
-              const newData = {
-                ...dataRegis,
-                password: e.target.value,
-              };
+              const newData = { ...dataRegis, password: e.target.value };
               setDataRegis(newData);
             }}
-            className="text-black border border-gray-400 rounded-md h-10 w-[300px] mb-2 p-2"
+            className="text-black border border-gray-400 rounded-md h-10 w-full mb-2 p-2"
           />{" "}
           <br />
-          <button
-            type="button"
-            className="border border-gray-400 rounded-md text-black font-bold h-10 w-32 bg-white hover:bg-gray-500 hover:text-white transition duration-300"
-            onClick={onHandleRegis}
-          >
-            Submit
-          </button>
-          <p className="mt-4 text-black">
-            Already have an account?
+          <div className="flex justify-center">
+            <button
+              type="button"
+              className="border border-gray-400 rounded-md text-black font-bold h-10 w-32 bg-white hover:bg-gray-500 hover:text-white transition duration-300"
+              onClick={onHandleRegis}
+            >
+              Submit
+            </button>
+          </div>
+          <p className="mt-4 text-black text-center">
+            Already have an account?{" "}
             <span
-              className="underline text-blue-500 cursor-pointer pl-1"
+              className="underline text-blue-500 cursor-pointer"
               onClick={() => router.push("/signin")}
             >
               Sign In

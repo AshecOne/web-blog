@@ -2,4 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
+@media (max-width: 640px) {
+    .destination-image {
+      width: 300px;
+      height: 200px;
+    }
+  }

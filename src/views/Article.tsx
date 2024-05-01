@@ -72,10 +72,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
   return (
     <section id="article" className="bg-white mt-10 mb-6 pb-5">
       <Container>
-        <div
-          className="flex mt-4 pt-3 border-b border-black"
-          style={{ overflowX: "scroll" }}
-        >
+        <div className="flex mt-4 pt-3 border-b border-black">
           <div
             key="all"
             className={`pb-2 mx-4 px-4 font-bold cursor-pointer ${
