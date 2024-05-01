@@ -149,7 +149,7 @@ const SignIn: React.FunctionComponent = () => {
             </p>
           )}
           <p className="mt-4 text-black text-center">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <span
               className="hover:underline hover:text-blue-500 cursor-pointer"
               onClick={() => router.push("/signup")}
