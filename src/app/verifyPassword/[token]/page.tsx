@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { BASE_URL } from "@/utils/helper";
@@ -7,15 +7,33 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface VerifyPasswordProps {
-  token: string;
+  params: { token: string };
 }
 
 const VerifyPassword: React.FunctionComponent<VerifyPasswordProps> = ({
-  token,
+  params,
 }) => {
+  const { token } = params;
   const router = useRouter();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isTokenValid, setIsTokenValid] = useState(false);
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/auth/verify-token/${token}`
+        );
+        setIsTokenValid(response.data.isValid);
+      } catch (error) {
+        console.error(error);
+        setIsTokenValid(false);
+      }
+    };
+
+    verifyToken();
+  }, [token]);
 
   const handleResetPassword = async () => {
     if (password !== confirmPassword) {
@@ -39,6 +57,10 @@ const VerifyPassword: React.FunctionComponent<VerifyPasswordProps> = ({
       toast.error("Failed to reset password. Please try again.");
     }
   };
+
+  if (!isTokenValid) {
+    return <div>Invalid token</div>;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -74,14 +96,8 @@ const VerifyPassword: React.FunctionComponent<VerifyPasswordProps> = ({
   );
 };
 
-export const getServerSideProps = async (context: any) => {
-  const { token } = context.params;
-
-  return {
-    props: {
-      token,
-    },
-  };
-};
+export async function generateStaticParams() {
+  return [{ token: "" }];
+}
 
 export default VerifyPassword;

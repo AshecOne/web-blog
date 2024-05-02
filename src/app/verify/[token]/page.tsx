@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { BASE_URL } from "@/utils/helper";
@@ -7,13 +7,31 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface VerifyEmailProps {
-  token: string;
+  params: { token: string };
 }
 
-const VerifyEmail: React.FunctionComponent<VerifyEmailProps> = ({ token }) => {
+const VerifyEmail: React.FunctionComponent<VerifyEmailProps> = ({ params }) => {
+  const { token } = params;
   const router = useRouter();
   const [otp, setOtp] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
+  const [isTokenValid, setIsTokenValid] = useState(false);
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/auth/verify-token/${token}`
+        );
+        setIsTokenValid(response.data.isValid);
+      } catch (error) {
+        console.error(error);
+        setIsTokenValid(false);
+      }
+    };
+
+    verifyToken();
+  }, [token]);
 
   const handleVerifyEmail = async () => {
     setIsVerifying(true);
@@ -35,6 +53,10 @@ const VerifyEmail: React.FunctionComponent<VerifyEmailProps> = ({ token }) => {
       setIsVerifying(false);
     }
   };
+
+  if (!isTokenValid) {
+    return <div>Invalid token</div>;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -66,14 +88,8 @@ const VerifyEmail: React.FunctionComponent<VerifyEmailProps> = ({ token }) => {
   );
 };
 
-export const getServerSideProps = async (context: any) => {
-  const { token } = context.params;
-
-  return {
-    props: {
-      token,
-    },
-  };
-};
+export async function generateStaticParams() {
+  return [{ token: "" }];
+}
 
 export default VerifyEmail;
