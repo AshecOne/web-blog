@@ -1,14 +1,16 @@
-"use client";
 import React, { useState } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/router";
 import axios from "axios";
 import { BASE_URL } from "@/utils/helper";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const VerifyEmail: React.FunctionComponent = () => {
+interface VerifyEmailProps {
+  token: string;
+}
+
+const VerifyEmail: React.FunctionComponent<VerifyEmailProps> = ({ token }) => {
   const router = useRouter();
-  const { token } = useParams(); 
   const [otp, setOtp] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
 
@@ -61,6 +63,16 @@ const VerifyEmail: React.FunctionComponent = () => {
       <ToastContainer />
     </div>
   );
+};
+
+export const getServerSideProps = async (context: any) => {
+  const { token } = context.params;
+
+  return {
+    props: {
+      token,
+    },
+  };
 };
 
 export default VerifyEmail;

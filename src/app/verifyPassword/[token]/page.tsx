@@ -1,25 +1,27 @@
-"use client";
-import React, { useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import axios from 'axios';
-import { BASE_URL } from '@/utils/helper';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useState } from "react";
+import { useRouter } from "next/router";
+import axios from "axios";
+import { BASE_URL } from "@/utils/helper";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const VerifyPassword: React.FunctionComponent = () => {
+interface VerifyPasswordProps {
+  token: string;
+}
+
+const VerifyPassword: React.FunctionComponent<VerifyPasswordProps> = ({
+  token,
+}) => {
   const router = useRouter();
-  const { token } = useParams();
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleResetPassword = async () => {
     if (password !== confirmPassword) {
       toast.error("Passwords do not match!");
       return;
     }
-
     try {
-
       const response = await axios.post(
         `${BASE_URL}/verify-password/${token}`,
         { password },
@@ -29,9 +31,8 @@ const VerifyPassword: React.FunctionComponent = () => {
           },
         }
       );
-
       toast.success("Password reset successfully. You can now log in.");
-      router.push('/signin');
+      router.push("/signin");
     } catch (error) {
       console.error(error);
       toast.error("Failed to reset password. Please try again.");
@@ -70,6 +71,16 @@ const VerifyPassword: React.FunctionComponent = () => {
       <ToastContainer />
     </div>
   );
+};
+
+export const getServerSideProps = async (context: any) => {
+  const { token } = context.params;
+
+  return {
+    props: {
+      token,
+    },
+  };
 };
 
 export default VerifyPassword;
