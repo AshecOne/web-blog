@@ -1,29 +1,45 @@
-import React, { useState } from "react";
-import { useRouter } from "next/router";
+"use client";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import { BASE_URL } from "@/utils/helper";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface VerifyPasswordProps {
-  isTokenValid: boolean;
-  token: string;
+  params: { token: string };
 }
 
 const VerifyPassword: React.FunctionComponent<VerifyPasswordProps> = ({
-  isTokenValid,
-  token,
+  params,
 }) => {
+  const { token } = params;
   const router = useRouter();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isTokenValid, setIsTokenValid] = useState(false);
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/auth/verify-token/${token}`
+        );
+        setIsTokenValid(response.data.isValid);
+      } catch (error) {
+        console.error(error);
+        setIsTokenValid(false);
+      }
+    };
+
+    verifyToken();
+  }, [token]);
 
   const handleResetPassword = async () => {
     if (password !== confirmPassword) {
       toast.error("Passwords do not match!");
       return;
     }
-
     try {
       const response = await axios.post(
         `${BASE_URL}/verify-password/${token}`,
@@ -79,28 +95,5 @@ const VerifyPassword: React.FunctionComponent<VerifyPasswordProps> = ({
     </div>
   );
 };
-
-export async function getServerSideProps(context: any) {
-  const { token } = context.params;
-
-  try {
-    const response = await axios.get(`${BASE_URL}/auth/verify-token/${token}`);
-    const isTokenValid = response.data.isValid;
-    return {
-      props: {
-        isTokenValid,
-        token,
-      },
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      props: {
-        isTokenValid: false,
-        token,
-      },
-    };
-  }
-}
 
 export default VerifyPassword;
