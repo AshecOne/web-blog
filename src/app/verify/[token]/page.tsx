@@ -1,18 +1,16 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 import { BASE_URL } from "@/utils/helper";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-interface VerifyEmailProps {
-  params: { token: string };
-}
-
-const VerifyEmail: React.FunctionComponent<VerifyEmailProps> = ({ params }) => {
-  const { token } = params;
+const VerifyEmailPage: React.FunctionComponent = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
   const [otp, setOtp] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
   const [isTokenValid, setIsTokenValid] = useState(false);
@@ -20,9 +18,7 @@ const VerifyEmail: React.FunctionComponent<VerifyEmailProps> = ({ params }) => {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get(
-          `${BASE_URL}/auth/verify-token/${token}`
-        );
+        const response = await axios.get(`${BASE_URL}/auth/verify-token/${token}`);
         setIsTokenValid(response.data.isValid);
       } catch (error) {
         console.error(error);
@@ -30,7 +26,9 @@ const VerifyEmail: React.FunctionComponent<VerifyEmailProps> = ({ params }) => {
       }
     };
 
-    verifyToken();
+    if (token) {
+      verifyToken();
+    }
   }, [token]);
 
   const handleVerifyEmail = async () => {
@@ -88,4 +86,4 @@ const VerifyEmail: React.FunctionComponent<VerifyEmailProps> = ({ params }) => {
   );
 };
 
-export default VerifyEmail;
+export default VerifyEmailPage;
