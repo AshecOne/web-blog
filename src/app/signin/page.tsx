@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import * as React from "react";
 import { useState } from "react";
 import axios from "axios";
-import { BASE_URL } from "@/utils/helper";
 import { useAppDispatch } from "@/lib/hooks";
 import { setSuccessLogin } from "@/lib/features/userSlice";
 import { useAppSelector } from "@/lib/hooks";
@@ -35,7 +34,7 @@ const SignIn: React.FunctionComponent = () => {
       if (dataInput.emailOrUsername === "" || dataInput.password === "") {
         throw new Error("Email or username and password are required");
       }
-      const response = await axios.post(BASE_URL + `/auth/signin`, {
+      const response = await axios.post(process.env.NEXT_PUBLIC_BASE_URL + `/auth/signin`, {
         emailOrUsername: dataInput.emailOrUsername,
         password: dataInput.password,
       });
@@ -64,7 +63,7 @@ const SignIn: React.FunctionComponent = () => {
 
   const handleForgotPassword = async () => {
     try {
-      const response = await axios.post(`${BASE_URL}/auth/forgot-password`, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/forgot-password`, {
         email: dataInput.emailOrUsername,
       });
       toast.success("Check your email for changing password.");

@@ -2,7 +2,6 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { BASE_URL } from "@/utils/helper";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setSuccessLogin } from "@/lib/features/userSlice";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -33,7 +32,7 @@ const Profil: React.FunctionComponent = () => {
 
   const handleSave = async () => {
     try {
-      const response = await axios.put(BASE_URL + `/users/${user.id}`, {
+      const response = await axios.put(process.env.NEXT_PUBLIC_BASE_URL + `/users/${user.id}`, {
         ...editedUser,
         profilePicture,
       });

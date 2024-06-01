@@ -3,7 +3,6 @@ import Container from "@/components/Container";
 import Post from "@/components/Post";
 import MangaReads from "@/components/MangaReads";
 import axios from "axios";
-import { BASE_URL } from "@/utils/helper";
 
 interface IArticleProps {}
 
@@ -37,7 +36,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
 
   const getArticles = async () => {
     try {
-      const response = await axios.get(BASE_URL + `/articles`);
+      const response = await axios.get(process.env.NEXT_PUBLIC_BASE_URL + `/articles`);
       setArticles(response.data.data);
     } catch (error) {
       console.log(error);
@@ -46,7 +45,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
 
   const getCategories = async () => {
     try {
-      const response = await axios.get(BASE_URL + `/categories`);
+      const response = await axios.get(process.env.NEXT_PUBLIC_BASE_URL + `/categories`);
       setCategories(response.data.data);
     } catch (error) {
       console.log(error);

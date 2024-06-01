@@ -3,7 +3,6 @@ import * as React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { BASE_URL } from "@/utils/helper";
 import { ToastContainer, toast } from "react-toastify";
 import { useAppSelector } from "@/lib/hooks";
 import "react-toastify/dist/ReactToastify.css";
@@ -59,7 +58,7 @@ const SignUp: React.FunctionComponent = () => {
         throw new Error("Email has been registered");
       }
       const { username, email, password, role } = dataRegis;
-      const response = await axios.post(BASE_URL + `/auth/regis`, {
+      const response = await axios.post(process.env.NEXT_PUBLIC_BASE_URL + `/auth/regis`, {
         username,
         email,
         password,
@@ -78,7 +77,7 @@ const SignUp: React.FunctionComponent = () => {
 
   const checkEmailExists = async (email: string) => {
     try {
-      const response = await axios.get(`${BASE_URL}/auth?email=${email}`);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/auth?email=${email}`);
       return response.data.length > 0;
     } catch (error) {
       console.error(error);

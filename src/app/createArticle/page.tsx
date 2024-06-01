@@ -3,7 +3,6 @@ import * as React from "react";
 import { useState } from "react";
 import { useAppSelector } from "@/lib/hooks";
 import axios from "axios";
-import { BASE_URL } from "@/utils/helper";
 import { useRouter } from "next/navigation";
 import ClipLoader from "react-spinners/ClipLoader";
 
@@ -70,7 +69,7 @@ const CreateArticle: React.FunctionComponent = () => {
         throw new Error("Please input all your data");
       }
       const { id: authorId } = userInfo;
-      const response = await axios.post(BASE_URL + "/articles", {
+      const response = await axios.post(process.env.NEXT_PUBLIC_BASE_URL + "/articles", {
         ...article,
         categoryId: article.category,
         authorId,

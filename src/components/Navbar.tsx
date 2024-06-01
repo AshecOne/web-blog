@@ -9,7 +9,6 @@ import { setSuccessLogin } from "@/lib/features/userSlice";
 import { resetUserState } from "@/lib/features/userSlice";
 import { getCategory } from "@/lib/features/categorySlice";
 import axios from "axios";
-import { BASE_URL } from "@/utils/helper";
 import { FaBars } from "react-icons/fa";
 
 interface INavbarProps {}
@@ -50,7 +49,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
       if (typeof window !== "undefined") {
         const token = localStorage.getItem("user-token");
         if (token) {
-          const response = await axios.get(BASE_URL + "/auth/keeplogin", {
+          const response = await axios.get(process.env.NEXT_PUBLIC_BASE_URL + "/auth/keeplogin", {
             headers: { Authorization: `Bearer ${token}` },
           });
           if (response.data.success) {

@@ -2,7 +2,6 @@
 import * as React from "react";
 import axios from "axios";
 import { useAppSelector } from "@/lib/hooks";
-import { BASE_URL } from "@/utils/helper";
 import { useRouter } from "next/navigation";
 import ClipLoader from "react-spinners/ClipLoader";
 
@@ -31,7 +30,7 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
   React.useEffect(() => {
     const getArticles = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/articles/${userId}`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/articles/${userId}`);
         setArticles(response.data.data);
       } catch (error) {
         console.error("Failed to fetch articles:", error);
@@ -62,7 +61,7 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
     if (editData) {
       try {
         const response = await axios.put(
-          BASE_URL + `/articles/${editData.id}`,
+          process.env.NEXT_PUBLIC_BASE_URL + `/articles/${editData.id}`,
           editData
         );
         setArticles(
@@ -80,7 +79,7 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
 
   const handleDelete = async (articleId: string) => {
     try {
-      await axios.delete(BASE_URL + `/articles/${articleId}`);
+      await axios.delete(process.env.NEXT_PUBLIC_BASE_URL + `/articles/${articleId}`);
       setArticles(articles.filter((article) => article.id !== articleId));
     } catch (error) {
       console.log(error);
