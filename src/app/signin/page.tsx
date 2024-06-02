@@ -34,7 +34,7 @@ const SignIn: React.FunctionComponent = () => {
       if (dataInput.emailOrUsername === "" || dataInput.password === "") {
         throw new Error("Email or username and password are required");
       }
-      const response = await axios.post(process.env.NEXT_PUBLIC_BASE_URL + `/auth/signin`, {
+      const response = await axios.post(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/auth/signin`, {
         emailOrUsername: dataInput.emailOrUsername,
         password: dataInput.password,
       });
@@ -63,7 +63,7 @@ const SignIn: React.FunctionComponent = () => {
 
   const handleForgotPassword = async () => {
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/forgot-password`, {
+      const response = await axios.post(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/auth/forgot-password`, {
         email: dataInput.emailOrUsername,
       });
       toast.success("Check your email for changing password.");
