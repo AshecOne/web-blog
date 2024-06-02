@@ -41,6 +41,7 @@ const SignUp: React.FunctionComponent = () => {
   const onHandleRegis = async () => {
     try {
       console.log(dataRegis);
+      console.log(process.env.NEXT_PUBLIC_BASE_URL)
       if (Object.values(dataRegis).includes("")) {
         throw new Error("Please input all your data");
       }
@@ -58,7 +59,7 @@ const SignUp: React.FunctionComponent = () => {
         throw new Error("Email has been registered");
       }
       const { username, email, password, role } = dataRegis;
-      const response = await axios.post(process.env.NEXT_PUBLIC_BASE_URL + `/auth/regis`, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/regis`, {
         username,
         email,
         password,
