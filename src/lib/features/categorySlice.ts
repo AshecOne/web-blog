@@ -35,7 +35,7 @@ export default categorySlice.reducer;
 export const getCategory = () => {
   return async (dispatch: any) => {
     try {
-      const res = await axios.get(process.env.NEXT_PUBLIC_BASE_URL + `/categories`);
+      const res = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/categories`);
       console.log("Response from middleware", res.data);
       dispatch(setCategoryAction(res.data.data));
     } catch (error) {

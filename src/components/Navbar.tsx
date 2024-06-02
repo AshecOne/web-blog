@@ -49,7 +49,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
       if (typeof window !== "undefined") {
         const token = localStorage.getItem("user-token");
         if (token) {
-          const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/keeplogin`, {
+          const response = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/auth/keeplogin`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           if (response.data.success) {

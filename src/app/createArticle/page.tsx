@@ -69,7 +69,7 @@ const CreateArticle: React.FunctionComponent = () => {
         throw new Error("Please input all your data");
       }
       const { id: authorId } = userInfo;
-      const response = await axios.post(process.env.NEXT_PUBLIC_BASE_URL + "/articles", {
+      const response = await axios.post("https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles", {
         ...article,
         categoryId: article.category,
         authorId,

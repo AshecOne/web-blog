@@ -30,7 +30,9 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
   React.useEffect(() => {
     const getArticles = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/articles/${userId}`);
+        const response = await axios.get(
+          `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles/${userId}`
+        );
         setArticles(response.data.data);
       } catch (error) {
         console.error("Failed to fetch articles:", error);
@@ -39,7 +41,7 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
     getArticles();
   }, [userId]);
 
-  if (typeof window !== 'undefined' && !isLoggedIn) {
+  if (typeof window !== "undefined" && !isLoggedIn) {
     router.replace("/signin");
     return null;
   }
@@ -61,7 +63,7 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
     if (editData) {
       try {
         const response = await axios.put(
-          process.env.NEXT_PUBLIC_BASE_URL + `/articles/${editData.id}`,
+          `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles/${editData.id}`,
           editData
         );
         setArticles(
@@ -79,7 +81,9 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
 
   const handleDelete = async (articleId: string) => {
     try {
-      await axios.delete(process.env.NEXT_PUBLIC_BASE_URL + `/articles/${articleId}`);
+      await axios.delete(
+        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles/${articleId}`
+      );
       setArticles(articles.filter((article) => article.id !== articleId));
     } catch (error) {
       console.log(error);

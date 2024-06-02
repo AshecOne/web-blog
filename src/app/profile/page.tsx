@@ -32,7 +32,7 @@ const Profil: React.FunctionComponent = () => {
 
   const handleSave = async () => {
     try {
-      const response = await axios.put(process.env.NEXT_PUBLIC_BASE_URL + `/users/${user.id}`, {
+      const response = await axios.put(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/users/${user.id}`, {
         ...editedUser,
         profilePicture,
       });

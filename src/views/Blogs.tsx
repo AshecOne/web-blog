@@ -41,7 +41,7 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
 
   const getArticles = async () => {
     try {
-      const response = await axios.get(process.env.NEXT_PUBLIC_BASE_URL + `/articles`);
+      const response = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles`);
       setArticles(response.data.data);
     } catch (error) {
       console.log(error);
@@ -55,7 +55,7 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
 
   const getCategory = async () => {
     try {
-      const response = await axios.get(process.env.NEXT_PUBLIC_BASE_URL + `/category`);
+      const response = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/category`);
       dispatch(setCategoryAction(response.data));
     } catch (error) {
       console.log(error);
