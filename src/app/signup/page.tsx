@@ -59,7 +59,7 @@ const SignUp: React.FunctionComponent = () => {
         throw new Error("Email has been registered");
       }
       const { username, email, password, role } = dataRegis;
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/regis`, {
+      const response = await axios.post(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/auth/regis`, {
         username,
         email,
         password,
@@ -78,7 +78,7 @@ const SignUp: React.FunctionComponent = () => {
 
   const checkEmailExists = async (email: string) => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/auth?email=${email}`);
+      const response = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/auth?email=${email}`);
       return response.data.length > 0;
     } catch (error) {
       console.error(error);
