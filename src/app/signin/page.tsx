@@ -34,10 +34,13 @@ const SignIn: React.FunctionComponent = () => {
       if (dataInput.emailOrUsername === "" || dataInput.password === "") {
         throw new Error("Email or username and password are required");
       }
-      const response = await axios.post(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/auth/signin`, {
-        emailOrUsername: dataInput.emailOrUsername,
-        password: dataInput.password,
-      });
+      const response = await axios.post(
+        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/auth/signin`,
+        {
+          emailOrUsername: dataInput.emailOrUsername,
+          password: dataInput.password,
+        }
+      );
       if (response.data.success) {
         const user = response.data.data;
         const token = response.data.token;
@@ -55,30 +58,41 @@ const SignIn: React.FunctionComponent = () => {
       } else {
         throw new Error(response.data.message);
       }
-    } catch (error) {
-      alert(error);
+    } catch (error: any) {
+      if (error.response) {
+        const { status, data } = error.response;
+        if (status === 401) {
+          toast.error(data.message);
+        } else if (status === 403) {
+          toast.error(data.message);
+        } else {
+          toast.error("An error occurred. Please try again.");
+        }
+      } else {
+        toast.error("An error occurred. Please try again.");
+      }
       setDataInput({ emailOrUsername: "", password: "" });
     }
   };
 
-  const handleForgotPassword = async () => {
-    try {
-      const response = await axios.post(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/auth/forgot-password`, {
-        email: dataInput.emailOrUsername,
-      });
-      toast.success("Check your email for changing password.");
-    } catch (error) {
-      console.error(error);
-      if (axios.isAxiosError(error)) {
-        const errorMessage =
-          error.response?.data.message ||
-          "An error occurred. Please try again.";
-        toast.error(errorMessage);
-      } else {
-        toast.error("An error occurred. Please try again.");
-      }
-    }
-  };
+  // const handleForgotPassword = async () => {
+  //   try {
+  //     const response = await axios.post(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/auth/forgot-password`, {
+  //       email: dataInput.emailOrUsername,
+  //     });
+  //     toast.success("Check your email for changing password.");
+  //   } catch (error) {
+  //     console.error(error);
+  //     if (axios.isAxiosError(error)) {
+  //       const errorMessage =
+  //         error.response?.data.message ||
+  //         "An error occurred. Please try again.";
+  //       toast.error(errorMessage);
+  //     } else {
+  //       toast.error("An error occurred. Please try again.");
+  //     }
+  //   }
+  // };
 
   if (isLoggedIn) {
     return null;
@@ -129,14 +143,12 @@ const SignIn: React.FunctionComponent = () => {
             <button
               type="button"
               className="border border-gray-400 rounded-md text-black font-bold h-14 w-32 bg-white hover:bg-gray-500 hover:text-white transition duration-300"
-              onClick={
-                isForgotPassword ? handleForgotPassword : onHandleLogin
-              }
+              onClick={onHandleLogin}
             >
-              {isForgotPassword ? "Change Password" : "Log In"}
+              Log In
             </button>
           </div>
-          {!isForgotPassword && (
+          {/* {!isForgotPassword && (
             <p className="mt-4 text-black text-center">
               <button
                 type="button"
@@ -146,7 +158,7 @@ const SignIn: React.FunctionComponent = () => {
                 Forgot Password?
               </button>
             </p>
-          )}
+          )} */}
           <p className="mt-4 text-black text-center">
             Don&apos;t have an account?{" "}
             <span
