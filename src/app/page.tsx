@@ -1,5 +1,5 @@
-'use client';
-import React from 'react';
+"use client";
+import React from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Blogs from "@/views/Blogs";
@@ -13,27 +13,31 @@ export default function Home() {
 
   React.useEffect(() => {
     // Simulasikan proses loading selama 2 detik
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
-  }, []);
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <ClipLoader size={150} color={"#123abc"} loading={true} />
-      </div>
-    );
-  }
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   return (
     <>
-      <Navbar />
-      <Hero />
-      <Blogs />
-      <Booking />
-      <Article />
-      <Footer />
+      {isLoading ? (
+        <div className="flex justify-center items-center h-screen">
+          <ClipLoader size={150} color={"#123abc"} loading={true} />
+        </div>
+      ) : (
+        <>
+          <Navbar />
+          <Hero />
+          <Blogs />
+          <Booking />
+          <Article />
+          <Footer />
+        </>
+      )}
     </>
   );
 }

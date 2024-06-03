@@ -20,18 +20,14 @@ const Profil: React.FunctionComponent = () => {
 
   React.useEffect(() => {
     // Simulasikan proses loading selama 2 detik
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
-  }, []);
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <ClipLoader size={150} color={"#123abc"} loading={true} />
-      </div>
-    );
-  }
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   const handleEdit = () => {
     setEditMode(true);
@@ -39,10 +35,13 @@ const Profil: React.FunctionComponent = () => {
 
   const handleSave = async () => {
     try {
-      const response = await axios.put(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/users/${user.id}`, {
-        ...editedUser,
-        profilePicture,
-      });
+      const response = await axios.put(
+        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/users/${user.id}`,
+        {
+          ...editedUser,
+          profilePicture,
+        }
+      );
       dispatch(setSuccessLogin(response.data));
       setEditMode(false);
     } catch (error) {
@@ -70,65 +69,76 @@ const Profil: React.FunctionComponent = () => {
   };
 
   return (
-    <div className="flex justify-center items-top pt-16 h-screen bg-white">
-      <div className="w-full bg-white p-8">
-        <h1 className="text-3xl text-black font-bold mb-4">Profil</h1>
-        <hr className="mb-6" />
-        <div className="flex gap-10">
-          <div className="flex-1 space-y-4">
-            {editMode ? (
-              <>
-                <input
-                  type="text"
-                  value={editedUser.username}
-                  onChange={(e) =>
-                    setEditedUser({ ...editedUser, username: e.target.value })
-                  }
-                  className="text-black border border-gray-400 rounded-md h-10 w-full mb-4 p-2"
-                />
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="text-black border border-gray-400 rounded-md h-10 w-full mb-4 p-2"
-                />
-                <div className="flex justify-end">
-                  <button
-                    className="px-4 py-2 bg-gray-200 text-black rounded-md mr-2"
-                    onClick={handleCancel}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                    onClick={handleSave}
-                  >
-                    Save
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                <p className="text-black">{user.username}</p>
-                {profilePicture && (
-                  <img
-                    src={profilePicture}
-                    alt="Profile Picture"
-                    className="w-32 h-32 rounded-full object-cover"
-                  />
+    <>
+      {isLoading ? (
+        <div className="flex justify-center items-center h-screen">
+          <ClipLoader size={150} color={"#123abc"} loading={true} />
+        </div>
+      ) : (
+        <div className="flex justify-center items-top pt-16 h-screen bg-white">
+          <div className="w-full bg-white p-8">
+            <h1 className="text-3xl text-black font-bold mb-4">Profil</h1>
+            <hr className="mb-6" />
+            <div className="flex gap-10">
+              <div className="flex-1 space-y-4">
+                {editMode ? (
+                  <>
+                    <input
+                      type="text"
+                      value={editedUser.username}
+                      onChange={(e) =>
+                        setEditedUser({
+                          ...editedUser,
+                          username: e.target.value,
+                        })
+                      }
+                      className="text-black border border-gray-400 rounded-md h-10 w-full mb-4 p-2"
+                    />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="text-black border border-gray-400 rounded-md h-10 w-full mb-4 p-2"
+                    />
+                    <div className="flex justify-end">
+                      <button
+                        className="px-4 py-2 bg-gray-200 text-black rounded-md mr-2"
+                        onClick={handleCancel}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                        onClick={handleSave}
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-black">{user.username}</p>
+                    {profilePicture && (
+                      <img
+                        src={profilePicture}
+                        alt="Profile Picture"
+                        className="w-32 h-32 rounded-full object-cover"
+                      />
+                    )}
+                    <button
+                      className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                      onClick={handleEdit}
+                    >
+                      Edit
+                    </button>
+                  </>
                 )}
-                <button
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                  onClick={handleEdit}
-                >
-                  Edit
-                </button>
-              </>
-            )}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
