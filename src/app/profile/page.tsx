@@ -57,20 +57,6 @@ const Profil: React.FunctionComponent = () => {
     }
   };
 
-  // React.useEffect(() => {
-  //   if (!isLoggedIn && typeof window !== 'undefined') {
-  //     router.replace("/signin");
-  //   }
-  // }, [isLoggedIn, router]);
-  
-  // if (!isLoggedIn) {
-  //   return (
-  //     <div className="flex justify-center items-center h-screen">
-  //       <ClipLoader size={150} color={"#123abc"} loading={true} />
-  //     </div>
-  //   );
-  // }
-
   return (
     <div className="flex justify-center items-top pt-16 h-screen bg-white">
       <div className="w-full bg-white p-8">

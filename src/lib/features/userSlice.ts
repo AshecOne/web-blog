@@ -11,7 +11,7 @@ const initialState: IUserState = {
   id: "",
   username: "",
   email: "",
-  isLoggedIn: false,
+  isLoggedIn: typeof window !== 'undefined' ? !!localStorage.getItem("user-token") : false,
 };
 
 const userSlice = createSlice({
