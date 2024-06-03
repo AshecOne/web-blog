@@ -31,8 +31,14 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
   React.useEffect(() => {
     const getArticles = async () => {
       try {
+        const token = localStorage.getItem("user-token");
         const response = await axios.get(
-          `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles/${userId}`
+          `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         setArticles(response.data.data);
       } catch (error) {
@@ -40,21 +46,7 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
       }
     };
     getArticles();
-  }, [userId]);
-
-  // React.useEffect(() => {
-  //   if (!isLoggedIn && typeof window !== 'undefined') {
-  //     router.replace("/signin");
-  //   }
-  // }, [isLoggedIn, router]);
-  
-  // if (!isLoggedIn) {
-  //   return (
-  //     <div className="flex justify-center items-center h-screen">
-  //       <ClipLoader size={150} color={"#123abc"} loading={true} />
-  //     </div>
-  //   );
-  // }
+  }, []);
 
   const handleEdit = (article: IArticle) => {
     setEditId(article.id);
@@ -64,9 +56,15 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
   const handleSave = async () => {
     if (editData) {
       try {
+        const token = localStorage.getItem("user-token");
         const response = await axios.put(
           `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles/${editData.id}`,
-          editData
+          editData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         setArticles(
           articles.map((article) =>
@@ -83,8 +81,14 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
 
   const handleDelete = async (articleId: string) => {
     try {
+      const token = localStorage.getItem("user-token");
       await axios.delete(
-        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles/${articleId}`
+        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles/${articleId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setArticles(articles.filter((article) => article.id !== articleId));
     } catch (error) {

@@ -49,31 +49,20 @@ const CreateArticle: React.FunctionComponent = () => {
     }));
   }, [username]);
 
-  // React.useEffect(() => {
-  //   if (!isLoggedIn && typeof window !== 'undefined') {
-  //     router.replace("/signin");
-  //   }
-  // }, [isLoggedIn, router]);
-  
-  // if (!isLoggedIn) {
-  //   return (
-  //     <div className="flex justify-center items-center h-screen">
-  //       <ClipLoader size={150} color={"#123abc"} loading={true} />
-  //     </div>
-  //   );
-  // }
-
   const onHandlePublish = async () => {
     try {
       console.log(article);
       if (Object.values(article).includes("")) {
         throw new Error("Please input all your data");
       }
-      const { id: authorId } = userInfo;
+      const token = localStorage.getItem("user-token");
       const response = await axios.post("https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles", {
         ...article,
         categoryId: article.category,
-        authorId,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       console.log("Response:", response.data);
       alert("Blog is successfully created");

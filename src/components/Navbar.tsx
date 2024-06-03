@@ -168,7 +168,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
             <>
               <div className="hidden lg:block relative">
                 <div
-                  className="font-bold text-white cursor-pointer inline-block"
+                  className="font-bold text-white cursor-pointer inline-block hover:bg-black"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                   {username}
@@ -200,7 +200,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
 
               <div className="lg:hidden relative group">
                 <button
-                  className="text-white font-bold py-2 px-4 rounded"
+                  className="text-white font-bold underline py-2 px-4 rounded"
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 >
                   {username}

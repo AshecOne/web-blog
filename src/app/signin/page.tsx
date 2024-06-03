@@ -69,13 +69,14 @@ const SignIn: React.FunctionComponent = () => {
           toast.error(data.message);
         } else if (status === 404) {
           toast.error("Email or username not found");
+        } else if (status === 423) {
+          toast.error(data.message);
         } else {
           toast.error("An error occurred. Please try again.");
         }
       } else {
         toast.error("An error occurred. Please try again.");
       }
-      setDataInput({ emailOrUsername: "", password: "" });
     }
   };
 
@@ -133,17 +134,6 @@ const SignIn: React.FunctionComponent = () => {
               Log In
             </button>
           </div>
-          {/* {!isForgotPassword && (
-            <p className="mt-4 text-black text-center">
-              <button
-                type="button"
-                className="hover:underline hover:text-blue-500 cursor-pointer"
-                onClick={() => setIsForgotPassword(true)}
-              >
-                Forgot Password?
-              </button>
-            </p>
-          )} */}
           <p className="mt-4 text-black text-center">
             Don&apos;t have an account?{" "}
             <span
