@@ -41,7 +41,9 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
 
   const getArticles = async () => {
     try {
-      const response = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles`);
+      const response = await axios.get(
+        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles`
+      );
       setArticles(response.data.data);
     } catch (error) {
       console.log(error);
@@ -55,7 +57,9 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
 
   const getCategory = async () => {
     try {
-      const response = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/category`);
+      const response = await axios.get(
+        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/category`
+      );
       dispatch(setCategoryAction(response.data));
     } catch (error) {
       console.log(error);
@@ -161,7 +165,7 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
           ).length === 0 && (
             <div className="flex flex-col justify-center items-center mt-6 mb-6">
               <img
-                src="/empty.png"
+                src="https://ashecone.github.io/web-blog/empty.png"
                 alt="Article Empty"
                 style={{ width: "100px" }}
               />
