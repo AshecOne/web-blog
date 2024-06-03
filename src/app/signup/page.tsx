@@ -24,7 +24,6 @@ const SignUp: React.FunctionComponent = () => {
     confirmPassword: "",
     role: "author",
   });
-  console.log(dataRegis);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
 
@@ -40,23 +39,13 @@ const SignUp: React.FunctionComponent = () => {
 
   const onHandleRegis = async () => {
     try {
-      console.log(dataRegis);
-      console.log(process.env.NEXT_PUBLIC_BASE_URL)
       if (Object.values(dataRegis).includes("")) {
-        throw new Error("Please input all your data");
+        toast.error("Please input all your data");
+        return;
       }
       if (dataRegis.password !== dataRegis.confirmPassword) {
-        throw new Error("Confirm password is not matched");
-      }
-      const emailExists = await checkEmailExists(dataRegis.email ?? "");
-      if (emailExists) {
-        setDataRegis({
-          username: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-        });
-        throw new Error("Email has been registered");
+        toast.error("Confirm password is not matched");
+        return;
       }
       const { username, email, password, role } = dataRegis;
       const response = await axios.post(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/auth/regis`, {
@@ -67,22 +56,16 @@ const SignUp: React.FunctionComponent = () => {
       });
       console.log("Response Regis: ", response.data);
       toast.success(
-        "Registration successful. Please check your email for verification."
+        "Registration successful. You can now log in."
       );
       router.replace("/signin");
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
-      alert(error);
-    }
-  };
-
-  const checkEmailExists = async (email: string) => {
-    try {
-      const response = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/auth?email=${email}`);
-      return response.data.length > 0;
-    } catch (error) {
-      console.error(error);
-      return false;
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An error occurred. Please try again.");
+      }
     }
   };
 
@@ -167,7 +150,7 @@ const SignUp: React.FunctionComponent = () => {
           <p className="mt-4 text-black text-center">
             Already have an account?{" "}
             <span
-              className="underline text-blue-500 cursor-pointer"
+              className="underline text-black hover:text-blue-500 cursor-pointer"
               onClick={() => router.push("/signin")}
             >
               Sign In

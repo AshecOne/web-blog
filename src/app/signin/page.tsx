@@ -32,7 +32,8 @@ const SignIn: React.FunctionComponent = () => {
   const onHandleLogin = async () => {
     try {
       if (dataInput.emailOrUsername === "" || dataInput.password === "") {
-        throw new Error("Email or username and password are required");
+        toast.error("Email or username and password are required");
+        return;
       }
       const response = await axios.post(
         `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/auth/signin`,
@@ -56,15 +57,18 @@ const SignIn: React.FunctionComponent = () => {
           );
         }
       } else {
-        throw new Error(response.data.message);
+        toast.error(response.data.message);
       }
     } catch (error: any) {
+      console.log(error);
       if (error.response) {
         const { status, data } = error.response;
         if (status === 401) {
           toast.error(data.message);
         } else if (status === 403) {
           toast.error(data.message);
+        } else if (status === 404) {
+          toast.error("Email or username not found");
         } else {
           toast.error("An error occurred. Please try again.");
         }
@@ -74,25 +78,6 @@ const SignIn: React.FunctionComponent = () => {
       setDataInput({ emailOrUsername: "", password: "" });
     }
   };
-
-  // const handleForgotPassword = async () => {
-  //   try {
-  //     const response = await axios.post(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/auth/forgot-password`, {
-  //       email: dataInput.emailOrUsername,
-  //     });
-  //     toast.success("Check your email for changing password.");
-  //   } catch (error) {
-  //     console.error(error);
-  //     if (axios.isAxiosError(error)) {
-  //       const errorMessage =
-  //         error.response?.data.message ||
-  //         "An error occurred. Please try again.";
-  //       toast.error(errorMessage);
-  //     } else {
-  //       toast.error("An error occurred. Please try again.");
-  //     }
-  //   }
-  // };
 
   if (isLoggedIn) {
     return null;
@@ -142,7 +127,7 @@ const SignIn: React.FunctionComponent = () => {
           <div className="flex justify-center">
             <button
               type="button"
-              className="border border-gray-400 rounded-md text-black font-bold h-14 w-32 bg-white hover:bg-gray-500 hover:text-white transition duration-300"
+              className="border border-gray-400 rounded-md text-black font-bold h-10 w-32 bg-white hover:bg-gray-500 hover:text-white transition duration-300"
               onClick={onHandleLogin}
             >
               Log In
