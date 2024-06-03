@@ -5,6 +5,7 @@ import { useAppSelector } from "@/lib/hooks";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import ClipLoader from "react-spinners/ClipLoader";
+import Auth from "@/components/Auth";
 
 interface ICreateArticleProps {
   title?: string;
@@ -48,19 +49,19 @@ const CreateArticle: React.FunctionComponent = () => {
     }));
   }, [username]);
 
-  React.useEffect(() => {
-    if (!isLoggedIn && typeof window !== 'undefined') {
-      router.replace("/signin");
-    }
-  }, [isLoggedIn, router]);
+  // React.useEffect(() => {
+  //   if (!isLoggedIn && typeof window !== 'undefined') {
+  //     router.replace("/signin");
+  //   }
+  // }, [isLoggedIn, router]);
   
-  if (!isLoggedIn) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <ClipLoader size={150} color={"#123abc"} loading={true} />
-      </div>
-    );
-  }
+  // if (!isLoggedIn) {
+  //   return (
+  //     <div className="flex justify-center items-center h-screen">
+  //       <ClipLoader size={150} color={"#123abc"} loading={true} />
+  //     </div>
+  //   );
+  // }
 
   const onHandlePublish = async () => {
     try {
@@ -171,4 +172,4 @@ const CreateArticle: React.FunctionComponent = () => {
   );
 };
 
-export default CreateArticle;
+export default Auth(CreateArticle);

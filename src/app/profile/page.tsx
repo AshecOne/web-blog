@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setSuccessLogin } from "@/lib/features/userSlice";
 import ClipLoader from "react-spinners/ClipLoader";
+import Auth from "@/components/Auth";
 
 const Profil: React.FunctionComponent = () => {
   const router = useRouter();
@@ -56,19 +57,19 @@ const Profil: React.FunctionComponent = () => {
     }
   };
 
-  React.useEffect(() => {
-    if (!isLoggedIn && typeof window !== 'undefined') {
-      router.replace("/signin");
-    }
-  }, [isLoggedIn, router]);
+  // React.useEffect(() => {
+  //   if (!isLoggedIn && typeof window !== 'undefined') {
+  //     router.replace("/signin");
+  //   }
+  // }, [isLoggedIn, router]);
   
-  if (!isLoggedIn) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <ClipLoader size={150} color={"#123abc"} loading={true} />
-      </div>
-    );
-  }
+  // if (!isLoggedIn) {
+  //   return (
+  //     <div className="flex justify-center items-center h-screen">
+  //       <ClipLoader size={150} color={"#123abc"} loading={true} />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex justify-center items-top pt-16 h-screen bg-white">
@@ -133,4 +134,4 @@ const Profil: React.FunctionComponent = () => {
   );
 };
 
-export default Profil;
+export default Auth(Profil);

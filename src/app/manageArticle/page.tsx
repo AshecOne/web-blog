@@ -4,6 +4,7 @@ import axios from "axios";
 import { useAppSelector } from "@/lib/hooks";
 import { useRouter } from "next/navigation";
 import ClipLoader from "react-spinners/ClipLoader";
+import Auth from "@/components/Auth";
 
 interface IManageArticleProps {}
 
@@ -41,27 +42,19 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
     getArticles();
   }, [userId]);
 
-  React.useEffect(() => {
-    if (!isLoggedIn && typeof window !== 'undefined') {
-      router.replace("/signin");
-    }
-  }, [isLoggedIn, router]);
+  // React.useEffect(() => {
+  //   if (!isLoggedIn && typeof window !== 'undefined') {
+  //     router.replace("/signin");
+  //   }
+  // }, [isLoggedIn, router]);
   
-  if (!isLoggedIn) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <ClipLoader size={150} color={"#123abc"} loading={true} />
-      </div>
-    );
-  }
-
-  if (!isLoggedIn) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <ClipLoader size={150} color={"#123abc"} loading={true} />
-      </div>
-    );
-  }
+  // if (!isLoggedIn) {
+  //   return (
+  //     <div className="flex justify-center items-center h-screen">
+  //       <ClipLoader size={150} color={"#123abc"} loading={true} />
+  //     </div>
+  //   );
+  // }
 
   const handleEdit = (article: IArticle) => {
     setEditId(article.id);
@@ -244,4 +237,4 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
   );
 };
 
-export default ManageArticle;
+export default Auth(ManageArticle);
