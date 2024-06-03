@@ -16,6 +16,7 @@ interface INavbarProps {}
 const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
   const username = useAppSelector((state) => state.userReducer.username);
@@ -70,6 +71,24 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
       setIsLoading(false);
     }
   }, [dispatch]);
+
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isDropdownOpen &&
+        !(event.target as HTMLElement)?.closest(".relative") &&
+        !(event.target as HTMLElement)?.closest(".fixed")
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
 
   React.useEffect(() => {
     keepLogin();
@@ -146,10 +165,15 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
             </div>
           ) : isLoggedIn ? (
             <>
-              <div className="hidden lg:block relative group">
-                <div className="font-bold text-white cursor-pointer group inline-block">
+              <div className="hidden lg:block relative">
+                <div
+                  className="font-bold text-white cursor-pointer inline-block"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                >
                   {username}
-                  <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20 hidden group-hover:block group-focus-within:block">
+                </div>
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
                     <a
                       href="/profile"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
@@ -170,8 +194,9 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
                       Sign Out
                     </button>
                   </div>
-                </div>
+                )}
               </div>
+
               <div className="lg:hidden relative group">
                 <button
                   className="text-white font-bold py-2 px-4 rounded"
