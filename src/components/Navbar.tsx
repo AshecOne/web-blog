@@ -146,7 +146,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
           </div>
         ) : isLoggedIn ? (
           <>
-            <div className="hidden lg:block relative">
+            <div className="hidden lg:block relative group">
               <div className="font-bold text-white cursor-pointer group inline-block">
                 {username}
                 <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20 hidden group-hover:block group-focus-within:block">
