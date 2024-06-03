@@ -21,7 +21,6 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
   const username = useAppSelector((state) => state.userReducer.username);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
-  console.log("Token:", localStorage.getItem("user-token"));
   console.log("Is Logged In:", isLoggedIn);
 
   React.useEffect(() => {
