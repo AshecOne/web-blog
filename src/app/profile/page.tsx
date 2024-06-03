@@ -20,12 +20,6 @@ const Profil: React.FunctionComponent = () => {
     null
   );
 
-  React.useEffect(() => {
-    if (!isLoggedIn) {
-      router.replace("/signin");
-    }
-  }, [isLoggedIn, router]); 
-
   const handleEdit = () => {
     setEditMode(true);
   };
@@ -62,6 +56,12 @@ const Profil: React.FunctionComponent = () => {
     }
   };
 
+  React.useEffect(() => {
+    if (!isLoggedIn && typeof window !== 'undefined') {
+      router.replace("/web-blog/signin");
+    }
+  }, [isLoggedIn, router]);
+  
   if (!isLoggedIn) {
     return (
       <div className="flex justify-center items-center h-screen">

@@ -50,10 +50,10 @@ const CreateArticle: React.FunctionComponent = () => {
 
   React.useEffect(() => {
     if (!isLoggedIn && typeof window !== 'undefined') {
-      router.replace("/signin");
+      router.replace("/web-blog/signin");
     }
   }, [isLoggedIn, router]);
-
+  
   if (!isLoggedIn) {
     return (
       <div className="flex justify-center items-center h-screen">

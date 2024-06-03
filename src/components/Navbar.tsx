@@ -175,13 +175,13 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
                     <a
-                      href="/profile"
+                      href="/web-blog/profile"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
                     >
                       Profile
                     </a>
                     <a
-                      href="/createArticle"
+                      href="/web-blog/createArticle"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
                     >
                       Create Article

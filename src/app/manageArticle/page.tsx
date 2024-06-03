@@ -41,9 +41,18 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
     getArticles();
   }, [userId]);
 
-  if (typeof window !== "undefined" && !isLoggedIn) {
-    router.replace("/signin");
-    return null;
+  React.useEffect(() => {
+    if (!isLoggedIn && typeof window !== 'undefined') {
+      router.replace("/web-blog/signin");
+    }
+  }, [isLoggedIn, router]);
+  
+  if (!isLoggedIn) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader size={150} color={"#123abc"} loading={true} />
+      </div>
+    );
   }
 
   if (!isLoggedIn) {
