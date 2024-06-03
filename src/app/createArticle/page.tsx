@@ -8,6 +8,8 @@ import ClipLoader from "react-spinners/ClipLoader";
 import Auth from "@/components/Auth";
 import { getCategory } from "@/lib/features/categorySlice";
 import { useAppDispatch } from "@/lib/hooks";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface ICreateArticleProps {
   title?: string;
@@ -68,7 +70,6 @@ const CreateArticle: React.FunctionComponent = () => {
 
   const onHandlePublish = async () => {
     try {
-      console.log(article);
       if (Object.values(article).includes("")) {
         throw new Error("Please input all your data");
       }
@@ -85,19 +86,19 @@ const CreateArticle: React.FunctionComponent = () => {
           },
         }
       );
-      console.log("Response:", response.data);
-      alert("Blog is successfully created");
+      toast.success("Blog is successfully created");
       if (typeof window !== "undefined") {
         router.replace("/");
       }
     } catch (error) {
       console.log("Error:", error);
-      alert(error);
+      toast.error("Failed to create blog.");
     }
   };
 
   return (
     <>
+      <ToastContainer />
       {isLoading ? (
         <div className="flex justify-center items-center h-screen">
           <ClipLoader size={150} color={"#123abc"} loading={true} />

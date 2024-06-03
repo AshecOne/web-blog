@@ -168,7 +168,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
             <>
               <div className="hidden lg:block relative">
                 <div
-                  className="font-bold text-white cursor-pointer inline-block hover:bg-black hover:py-2 hover:px-4 hover:text-gray-300"
+                  className="font-bold text-white cursor-pointer inline-block"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 >
                   {username}
