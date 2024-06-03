@@ -28,17 +28,17 @@ const AuthorTemplate: React.FunctionComponent<IAuthorTemplateProps> = (props) =>
         </div>
         <ul className="flex flex-col md:flex-col items-center md:items-start mt-[30px] md:mt-[60px] space-y-4">
           <li>
-            <Link href="/profile" className="text-black hover:font-bold">
+            <Link href="/web-blog/profile" className="text-black hover:font-bold">
               Profile
             </Link>
           </li>
           <li>
-            <Link href="/createArticle" className="text-black hover:font-bold">
+            <Link href="/web-blog/createArticle" className="text-black hover:font-bold">
               Create Article
             </Link>
           </li>
           <li>
-            <Link href="/manageArticle" className="text-black hover:font-bold">
+            <Link href="/web-blog/manageArticle" className="text-black hover:font-bold">
               Manage Articles
             </Link>
           </li>
