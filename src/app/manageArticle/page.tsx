@@ -2,9 +2,10 @@
 import * as React from "react";
 import axios from "axios";
 import { useAppSelector } from "@/lib/hooks";
-import { useRouter } from "next/navigation";
 import ClipLoader from "react-spinners/ClipLoader";
 import Auth from "@/components/Auth";
+import { getCategory } from "@/lib/features/categorySlice";
+import { useAppDispatch } from "@/lib/hooks";
 
 interface IManageArticleProps {}
 
@@ -24,9 +25,27 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
   const [editId, setEditId] = React.useState<string | null>(null);
   const [editData, setEditData] = React.useState<IArticle | null>(null);
   const category = useAppSelector((state) => state.categoryReducer);
-  const userId = useAppSelector((state) => state.userReducer.id);
-  const router = useRouter();
-  const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
+  const dispatch = useAppDispatch();
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    // Simulasikan proses loading selama 2 detik
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader size={150} color={"#123abc"} loading={true} />
+      </div>
+    );
+  }
+
+  React.useEffect(() => {
+    dispatch(getCategory());
+  }, [dispatch]);
 
   React.useEffect(() => {
     const getArticles = async () => {

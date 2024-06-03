@@ -6,6 +6,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import ClipLoader from "react-spinners/ClipLoader";
 import Auth from "@/components/Auth";
+import { getCategory } from "@/lib/features/categorySlice";
+import { useAppDispatch } from "@/lib/hooks";
 
 interface ICreateArticleProps {
   title?: string;
@@ -16,10 +18,29 @@ interface ICreateArticleProps {
 
 const CreateArticle: React.FunctionComponent = () => {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const categories = useAppSelector((state) => state.categoryReducer);
   const username = useAppSelector((state) => state.userReducer.username);
-  const userInfo = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("user-info") || "{}") : {};
-  const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    // Simulasikan proses loading selama 2 detik
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader size={150} color={"#123abc"} loading={true} />
+      </div>
+    );
+  }
+
+  React.useEffect(() => {
+    dispatch(getCategory());
+  }, [dispatch]);
 
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
@@ -56,17 +77,21 @@ const CreateArticle: React.FunctionComponent = () => {
         throw new Error("Please input all your data");
       }
       const token = localStorage.getItem("user-token");
-      const response = await axios.post("https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles", {
-        ...article,
-        categoryId: article.category,
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.post(
+        "https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles",
+        {
+          ...article,
+          categoryId: article.category,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log("Response:", response.data);
       alert("Blog is successfully created");
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         router.replace("/");
       }
     } catch (error) {

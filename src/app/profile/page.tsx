@@ -1,18 +1,14 @@
 "use client";
 import React, { useEffect } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { setSuccessLogin } from "@/lib/features/userSlice";
 import ClipLoader from "react-spinners/ClipLoader";
 import Auth from "@/components/Auth";
 
 const Profil: React.FunctionComponent = () => {
-  const router = useRouter();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.userReducer);
-  const isLoggedIn = user.isLoggedIn;
-
   const [editMode, setEditMode] = React.useState(false);
   const [editedUser, setEditedUser] = React.useState({
     username: user.username,
@@ -20,6 +16,22 @@ const Profil: React.FunctionComponent = () => {
   const [profilePicture, setProfilePicture] = React.useState<string | null>(
     null
   );
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    // Simulasikan proses loading selama 2 detik
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <ClipLoader size={150} color={"#123abc"} loading={true} />
+      </div>
+    );
+  }
 
   const handleEdit = () => {
     setEditMode(true);
