@@ -50,7 +50,7 @@ const CreateArticle: React.FunctionComponent = () => {
 
   React.useEffect(() => {
     if (!isLoggedIn && typeof window !== 'undefined') {
-      router.replace("/web-blog/signin");
+      router.replace("/signin");
     }
   }, [isLoggedIn, router]);
   

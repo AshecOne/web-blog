@@ -43,7 +43,7 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
 
   React.useEffect(() => {
     if (!isLoggedIn && typeof window !== 'undefined') {
-      router.replace("/web-blog/signin");
+      router.replace("/signin");
     }
   }, [isLoggedIn, router]);
   
