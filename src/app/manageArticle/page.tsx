@@ -154,7 +154,7 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
             <div className="space-y-4">
               {articles.length === 0 ? (
                 <p className="text-black text-center">
-                  Not have any article, let's create one.
+                  Not have any article, let&apos;s create one.
                 </p>
               ) : (
                 articles.map((article) => (
