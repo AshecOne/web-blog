@@ -10,8 +10,26 @@ import { resetUserState } from "@/lib/features/userSlice";
 import { getCategory } from "@/lib/features/categorySlice";
 import axios from "axios";
 import { FaBars } from "react-icons/fa";
+import {
+  setSelectedCategoryAction,
+  ICategory,
+} from "@/lib/features/categorySlice";
 
 interface INavbarProps {}
+
+interface IArticle {
+  id: string;
+  author: {
+    username: string;
+  };
+  title: string;
+  urlImage: string;
+  description: string;
+  createdAt: string;
+  category: {
+    title: string;
+  };
+}
 
 const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
   const router = useRouter();
@@ -21,7 +39,13 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
   const isLoggedIn = useAppSelector((state) => state.userReducer.isLoggedIn);
   const username = useAppSelector((state) => state.userReducer.username);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
-  console.log("Is Logged In:", isLoggedIn);
+  const { categories } = useAppSelector((state) => state.categoryReducer);
+  const selectedCategory = useAppSelector(
+    (state) => state.categoryReducer.selectedCategory
+  );
+  const [showSearch, setShowSearch] = React.useState(false);
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [searchResults, setSearchResults] = React.useState<IArticle[]>([]);
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
@@ -37,6 +61,44 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
   React.useEffect(() => {
     dispatch(getCategory());
   }, [dispatch]);
+
+  const handleCategoryClick = (category: string) => {
+    dispatch(setSelectedCategoryAction(category));
+    router.push("/#blogs");
+  };
+
+  const handleSearchClick = () => {
+    setShowSearch(true);
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+
+    // Debounce search requests
+    const debounceTimer = setTimeout(() => {
+      searchArticles(query);
+    }, 300);
+
+    return () => {
+      clearTimeout(debounceTimer);
+    };
+  };
+
+  const searchArticles = async (query: string) => {
+    try {
+      const response = await axios.get<{ data: IArticle[] }>(
+        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles/search?query=${query}`
+      );
+      setSearchResults(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleArticleClick = (articleId: string) => {
+    router.push(`/articles/${articleId}`);
+  };
 
   const handleSignOut = () => {
     if (typeof window !== "undefined") {
@@ -116,30 +178,52 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
             />
           </div>
           <ul className="hidden md:text-sm md:pl-5 lg:flex gap-4">
-            <li className="text-white hover:text-gray-300 cursor-pointer">
-              DESTINATIONS
-            </li>
-            <li className="text-white hover:text-gray-300 cursor-pointer">
-              FOOD
-            </li>
-            <li className="text-white hover:text-gray-300 cursor-pointer">
-              SPORT
-            </li>
-            <li className="text-white hover:text-gray-300 cursor-pointer">
-              FAMILY
-            </li>
-            <li className="text-white hover:text-gray-300 cursor-pointer">
-              LIFESTYLE
-            </li>
+            {categories.map((category: ICategory) => (
+              <li
+                key={category.id}
+                className={`text-white hover:text-gray-300 cursor-pointer ${
+                  selectedCategory === category.title ? "font-bold" : ""
+                }`}
+                onClick={() =>
+                  category.title && handleCategoryClick(category.title)
+                }
+              >
+                {category.title}
+              </li>
+            ))}
           </ul>
           <div className="m:flex m:ml-14 md:-ml-16 lg:pl-16 lg:flex items-center">
-            <IoSearchOutline
-              size="1.5em"
-              className="text-white m:mr-6 cursor-pointer"
-            />
-            <button className="hidden m:block bg-black text-white py-1 px-3 hover:bg-gray-100 hover:text-black transition duration-300">
-              GET YOUR 120$ CHRISTMAS GIFT
-            </button>
+            {showSearch ? (
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                  className="bg-white text-black py-1 px-3"
+                />
+                {searchResults.length > 0 && (
+                  <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 shadow-md">
+                    {searchResults.map((article) => (
+                      <div
+                        key={article.id}
+                        onClick={() => handleArticleClick(article.id)}
+                        className="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                      >
+                        {article.title}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                className="hidden m:block bg-black text-white py-1 px-3 hover:bg-gray-100 hover:text-black transition duration-300"
+                onClick={handleSearchClick}
+              >
+                GET YOUR 120$ CHRISTMAS GIFT
+              </button>
+            )}
           </div>
           {isLoading ? (
             <div className="flex justify-center items-center">
@@ -298,46 +382,25 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
                       </div>
                       <div className="mt-6 px-4">
                         <nav className="grid gap-y-8">
-                          <a
-                            href="/"
-                            className="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50"
-                          >
-                            <span className="ml-3 text-base font-medium text-gray-900">
-                              DESTINATIONS
-                            </span>
-                          </a>
-                          <a
-                            href="/"
-                            className="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50"
-                          >
-                            <span className="ml-3 text-base font-medium text-gray-900">
-                              FOOD
-                            </span>
-                          </a>
-                          <a
-                            href="/"
-                            className="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50"
-                          >
-                            <span className="ml-3 text-base font-medium text-gray-900">
-                              SPORT
-                            </span>
-                          </a>
-                          <a
-                            href="/"
-                            className="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50"
-                          >
-                            <span className="ml-3 text-base font-medium text-gray-900">
-                              FAMILY
-                            </span>
-                          </a>
-                          <a
-                            href="/"
-                            className="-m-3 p-3 flex items-center rounded-md hover:bg-gray-50"
-                          >
-                            <span className="ml-3 text-base font-medium text-gray-900">
-                              LIFESTYLE
-                            </span>
-                          </a>
+                          {categories.map((category: ICategory) => (
+                            <a
+                              key={category.id}
+                              href="#blogs"
+                              className={`text-white hover:text-gray-300 cursor-pointer ${
+                                selectedCategory === category.title
+                                  ? "font-bold"
+                                  : ""
+                              }`}
+                              onClick={() =>
+                                category.title &&
+                                handleCategoryClick(category.title)
+                              }
+                            >
+                              <span className="ml-3 text-base font-medium text-gray-900">
+                                {category.title}
+                              </span>
+                            </a>
+                          ))}
                         </nav>
                       </div>
                       {!isLoggedIn && (

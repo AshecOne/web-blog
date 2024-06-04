@@ -5,6 +5,10 @@ import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import axios from "axios";
 import { setCategoryAction } from "@/lib/features/categorySlice";
+import {
+  setSelectedCategoryAction,
+  ICategory,
+} from "@/lib/features/categorySlice";
 
 interface IBlogsProps {}
 
@@ -22,21 +26,16 @@ interface IArticle {
   };
 }
 
-interface ICategory {
-  id: string;
-  title: string;
-}
-
 const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
-  const [selectedCategory, setSelectedCategory] = React.useState<string>("");
+  const selectedCategory = useAppSelector(
+    (state) => state.categoryReducer.selectedCategory
+  );
   const [articles, setArticles] = React.useState<IArticle[]>([]);
   const dispatch = useAppDispatch();
-  const category = useAppSelector(
-    (state) => state.categoryReducer
-  ) as ICategory[];
+  const category = useAppSelector((state) => state.categoryReducer.categories);
 
   const handleCategoryClick = (category: string) => {
-    setSelectedCategory(category);
+    setSelectedCategoryAction(category);
   };
 
   const getArticles = async () => {
@@ -109,7 +108,7 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
                   borderBottom:
                     selectedCategory === cat.title ? "4px solid black" : "none",
                 }}
-                onClick={() => handleCategoryClick(cat.title)}
+                onClick={() => cat.title && handleCategoryClick(cat.title)}
               >
                 {cat.title}
               </button>
@@ -131,8 +130,6 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
                     imgAlt={article.title}
                     title={article.title}
                     writer={article.author.username}
-                    profilePic="profil.png"
-                    profileAlt={article.author.username}
                     date={article.createdAt}
                     sharing=""
                     desc={article.description}
@@ -150,8 +147,6 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
                       imgAlt={article.title}
                       title={article.title}
                       writer={article.author.username}
-                      profilePic="/profil.png"
-                      profileAlt={article.author.username}
                       date={article.createdAt}
                       sharing=""
                       desc={article.description}

@@ -6,7 +6,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import ClipLoader from "react-spinners/ClipLoader";
 import Auth from "@/components/Auth";
-import { getCategory } from "@/lib/features/categorySlice";
+import { getCategory, ICategory } from "@/lib/features/categorySlice";
 import { useAppDispatch } from "@/lib/hooks";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -21,7 +21,7 @@ interface ICreateArticleProps {
 const CreateArticle: React.FunctionComponent = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const categories = useAppSelector((state) => state.categoryReducer);
+  const { categories } = useAppSelector((state) => state.categoryReducer);
   const username = useAppSelector((state) => state.userReducer.username);
   const [isLoading, setIsLoading] = React.useState(true);
 
@@ -136,7 +136,7 @@ const CreateArticle: React.FunctionComponent = () => {
                   className="text-black border border-gray-400 rounded-md h-10 w-full mb-4 p-2"
                 >
                   <option value="">Select a category</option>
-                  {categories.map((category, idx) => (
+                  {categories.map((category: ICategory) => (
                     <option key={category.id} value={category.id}>
                       {category.title}
                     </option>

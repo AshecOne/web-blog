@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // mendefinisikan properti/data apa saja yang mungkin nanti disimpan
-interface ICategory {
+export interface ICategory {
   id?: string;
   title?: string;
 }
@@ -12,22 +12,26 @@ const data: ICategory[] = [];
 
 const categorySlice = createSlice({
   name: "category",
-  initialState: [...data],
+  initialState: {
+    categories: [] as ICategory[],
+    selectedCategory: "",
+  },
   reducers: {
-    setCategory: (initialState, action) => {
-      return [...action.payload]; //cara mas abdi
-      // if (!initialState.length) {
-      //   return [...initialState, ...action.payload]; //cara putu
-      // }
+    setCategory: (state, action) => {
+      state.categories = action.payload;
+    },
+    setSelectedCategory: (state, action) => {
+      state.selectedCategory = action.payload;
     },
   },
 });
 
 const actions = {
   setCategoryAction: categorySlice.actions.setCategory,
+  setSelectedCategoryAction: categorySlice.actions.setSelectedCategory,
 };
 
-export const { setCategoryAction } = actions;
+export const { setCategoryAction, setSelectedCategoryAction } = actions;
 
 export default categorySlice.reducer;
 
@@ -35,7 +39,9 @@ export default categorySlice.reducer;
 export const getCategory = () => {
   return async (dispatch: any) => {
     try {
-      const res = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/categories`);
+      const res = await axios.get(
+        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/categories`
+      );
       console.log("Response from middleware", res.data);
       dispatch(setCategoryAction(res.data.data));
     } catch (error) {

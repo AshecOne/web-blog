@@ -8,6 +8,7 @@ import { getCategory } from "@/lib/features/categorySlice";
 import { useAppDispatch } from "@/lib/hooks";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ICategory } from "@/lib/features/categorySlice";
 
 interface IManageArticleProps {}
 
@@ -26,7 +27,7 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
   const [articles, setArticles] = React.useState<IArticle[]>([]);
   const [editId, setEditId] = React.useState<string | null>(null);
   const [editData, setEditData] = React.useState<IArticle | null>(null);
-  const category = useAppSelector((state) => state.categoryReducer);
+  const { categories } = useAppSelector((state) => state.categoryReducer);
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = React.useState(true);
   const [deleteId, setDeleteId] = React.useState<string | null>(null);
@@ -234,7 +235,7 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
                         className="text-black border border-gray-400 rounded-md h-10 w-full mb-4 p-2"
                       >
                         <option value="">Select a category</option>
-                        {category.map((val) => (
+                        {categories.map((val: ICategory) => (
                           <option key={val.id} value={val.id}>
                             {val.title}
                           </option>
