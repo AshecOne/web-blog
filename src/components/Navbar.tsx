@@ -64,7 +64,10 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
 
   const handleCategoryClick = (category: string) => {
     dispatch(setSelectedCategoryAction(category));
-    router.push("/#blogs");
+    const section = document.getElementById("blogs");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const handleSearchClick = () => {

@@ -57,7 +57,7 @@ const Blog: React.FunctionComponent<IBlogProps> = ({
           </div>
         </div>
       </div>
-      <div style={{ flex: "1", padding: "16px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+      <div style={{ flex: "1", display: "flex", flexDirection: "column", justifyContent: "space-between" }} className="px-16 py-4">
         <div>
           <h2 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "8px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{title}</h2>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>

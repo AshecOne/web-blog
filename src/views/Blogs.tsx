@@ -35,7 +35,7 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
   const category = useAppSelector((state) => state.categoryReducer.categories);
 
   const handleCategoryClick = (category: string) => {
-    setSelectedCategoryAction(category);
+    dispatch(setSelectedCategoryAction(category));
   };
 
   const getArticles = async () => {
