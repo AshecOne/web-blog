@@ -5,7 +5,11 @@ import { useRouter } from "next/navigation";
 import Container from "./Container";
 import { useAppSelector, useAppDispatch } from "@/lib/hooks";
 import { setSuccessLogin, resetUserState } from "@/lib/features/userSlice";
-import { getCategory, setSelectedCategoryAction, ICategory } from "@/lib/features/categorySlice";
+import {
+  getCategory,
+  setSelectedCategoryAction,
+  ICategory,
+} from "@/lib/features/categorySlice";
 import axios from "axios";
 import { FaBars } from "react-icons/fa";
 
@@ -34,7 +38,9 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
   const username = useAppSelector((state) => state.userReducer.username);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const { categories } = useAppSelector((state) => state.categoryReducer);
-  const selectedCategory = useAppSelector((state) => state.categoryReducer.selectedCategory);
+  const selectedCategory = useAppSelector(
+    (state) => state.categoryReducer.selectedCategory
+  );
   const [showSearch, setShowSearch] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [searchResults, setSearchResults] = React.useState<IArticle[]>([]);
@@ -64,8 +70,8 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
 
   const handleSearchClick = () => {
     setShowSearch(!showSearch);
-    setSearchQuery("");
-    setSearchResults([]);
+    // setSearchQuery("");
+    // setSearchResults([]);
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -198,7 +204,11 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
                 onClick={() => router.push("/")}
               />
             </div>
-            <ul className={`hidden md:text-sm md:pl-5 lg:flex gap-4 ${showSearch ? "hidden" : ""}`}>
+            <ul
+              className={`hidden md:text-sm md:pl-5 lg:flex gap-4 ${
+                showSearch ? "hidden" : ""
+              }`}
+            >
               {categories.map((category: ICategory) => (
                 <li
                   key={category.id}
@@ -218,39 +228,24 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
                 <div className="relative">
                   <IoCloseOutline
                     size="1.5em"
-                    className="text-white m:mr-6 cursor-pointer"
+                    className="text-white cursor-pointer"
                     onClick={handleSearchClick}
                   />
                   <input
                     type="text"
                     placeholder="Search articles..."
-                    value={searchQuery}
-                    onChange={handleSearchChange}
                     className="bg-white text-black py-1 px-3"
                   />
-                  {searchResults.length > 0 && (
-                    <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 shadow-md">
-                      {searchResults.map((article) => (
-                        <div
-                          key={article.id}
-                          onClick={() => handleArticleClick(article.id)}
-                          className="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                        >
-                          {article.title}
-                        </div>
-                      ))}
-                    </div>
-                  )}
                 </div>
               ) : (
                 <>
                   <IoSearchOutline
                     size="1.5em"
-                    className="text-white m:mr-6 cursor-pointer"
+                    className="text-white cursor-pointer"
                     onClick={handleSearchClick}
                   />
                   <button
-                    className="hidden m:block bg-black text-white py-1 px-3 hover:bg-gray-100 hover:text-black transition duration-300"
+                    className="bg-black text-white py-1 px-3 hover:bg-gray-100 hover:text-black transition duration-300"
                     onClick={() => alert("GET YOUR 120$ CHRISTMAS GIFT")}
                   >
                     GET YOUR 120$ CHRISTMAS GIFT
