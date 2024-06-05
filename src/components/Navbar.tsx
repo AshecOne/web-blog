@@ -169,261 +169,291 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
       id="navbar"
       className="absolute top-0 left-0 bg-black bg-opacity-35 w-full z-50"
     >
-      <Container>
-        <nav className="flex justify-between mx-6 md:-mx-4 lg:mx-0 items-center h-[4rem]">
-          <div className="flex items-center">
-            <img
-              src="https://ashecone.github.io/web-blog/logo.png"
-              alt="Logo"
-              className="cursor-pointer"
-              style={{ maxWidth: "250px", height: "auto" }}
-              onClick={() => router.push("/")}
-            />
-          </div>
-          <ul className="hidden md:text-sm md:pl-5 lg:flex gap-4">
-            {categories.map((category: ICategory) => (
-              <li
-                key={category.id}
-                className={`text-white hover:text-gray-300 cursor-pointer ${
-                  selectedCategory === category.title ? "font-bold" : ""
-                }`}
-                onClick={() =>
-                  category.title && handleCategoryClick(category.title)
-                }
-              >
-                {category.title}
-              </li>
-            ))}
-          </ul>
-          <div className="m:flex m:ml-14 md:-ml-16 lg:pl-16 lg:flex items-center">
-            {showSearch ? (
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search articles..."
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  className="bg-white text-black py-1 px-3"
-                />
-                {searchResults.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 shadow-md">
-                    {searchResults.map((article) => (
-                      <div
-                        key={article.id}
-                        onClick={() => handleArticleClick(article.id)}
-                        className="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                      >
-                        {article.title}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ) : (
-              <button
-                className="hidden m:block bg-black text-white py-1 px-3 hover:bg-gray-100 hover:text-black transition duration-300"
-                onClick={handleSearchClick}
-              >
-                GET YOUR 120$ CHRISTMAS GIFT
-              </button>
-            )}
-          </div>
-          {isLoading ? (
-            <div className="flex justify-center items-center">
-              <svg
-                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle
-                  className="opacity-25"
-                  cx="12"
-                  cy="12"
-                  r="10"
-                  stroke="currentColor"
-                  strokeWidth="4"
-                ></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                ></path>
-              </svg>
+      {isLoading ? (
+        <div className="flex justify-center items-center h-16">
+          <svg
+            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
+        </div>
+      ) : (
+        <Container>
+          <nav className="flex justify-between mx-6 md:-mx-4 lg:mx-0 items-center h-[4rem]">
+            <div className="flex items-center">
+              <img
+                src="https://ashecone.github.io/web-blog/logo.png"
+                alt="Logo"
+                className="cursor-pointer"
+                style={{ maxWidth: "250px", height: "auto" }}
+                onClick={() => router.push("/")}
+              />
             </div>
-          ) : isLoggedIn ? (
-            <>
-              <div className="hidden lg:block relative">
-                <div
-                  className="font-bold text-white cursor-pointer inline-block"
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            <ul className="hidden md:text-sm md:pl-5 lg:flex gap-4">
+              {categories.map((category: ICategory) => (
+                <li
+                  key={category.id}
+                  className={`text-white hover:text-gray-300 space-x-4 text-xl cursor-pointer ${
+                    selectedCategory === category.title ? "font-bold" : ""
+                  }`}
+                  onClick={() =>
+                    category.title && handleCategoryClick(category.title)
+                  }
                 >
-                  {username}
+                  {category.title}
+                </li>
+              ))}
+            </ul>
+            <div className="m:flex m:ml-14 md:-ml-16 lg:pl-16 lg:flex items-center">
+              <IoSearchOutline
+                size="1.5em"
+                className="text-white m:mr-6 cursor-pointer"
+                onClick={handleSearchClick}
+              />
+              {showSearch ? (
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Search articles..."
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    className="bg-white text-black py-1 px-3"
+                  />
+                  {searchResults.length > 0 && (
+                    <div className="absolute top-full left-0 right-0 bg-white border border-gray-300 shadow-md">
+                      {searchResults.map((article) => (
+                        <div
+                          key={article.id}
+                          onClick={() => handleArticleClick(article.id)}
+                          className="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                        >
+                          {article.title}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
-                    <a
-                      href="/web-blog/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                    >
-                      Profile
-                    </a>
-                    <a
-                      href="/web-blog/createArticle"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                    >
-                      Create Article
-                    </a>
-                    <div className="h-[1px] bg-black my-2 mx-auto w-[80%]"></div>
-                    <button
-                      onClick={handleSignOut}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 w-full text-left"
-                    >
-                      Sign Out
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              <div className="lg:hidden relative group">
+              ) : (
                 <button
-                  className="text-white font-bold underline py-2 px-4 rounded"
+                  className="hidden m:block bg-black text-white py-1 px-3 hover:bg-gray-100 hover:text-black transition duration-300"
+                  onClick={handleSearchClick}
+                >
+                  GET YOUR 120$ CHRISTMAS GIFT
+                </button>
+              )}
+            </div>
+            {isLoading ? (
+              <div className="flex justify-center items-center">
+                <svg
+                  className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              </div>
+            ) : isLoggedIn ? (
+              <>
+                <div className="hidden lg:block relative">
+                  <div
+                    className="font-bold text-white cursor-pointer inline-block"
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  >
+                    {username}
+                  </div>
+                  {isDropdownOpen && (
+                    <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
+                      <a
+                        href="/web-blog/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                      >
+                        Profile
+                      </a>
+                      <a
+                        href="/web-blog/createArticle"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                      >
+                        Create Article
+                      </a>
+                      <div className="h-[1px] bg-black my-2 mx-auto w-[80%]"></div>
+                      <button
+                        onClick={handleSignOut}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 w-full text-left"
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                <div className="lg:hidden relative group">
+                  <button
+                    className="text-white font-bold underline py-2 px-4 rounded"
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  >
+                    {username}
+                  </button>
+                  {isMobileMenuOpen && (
+                    <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
+                      <a
+                        href="/web-blog/profile"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                      >
+                        Profile
+                      </a>
+                      <a
+                        href="/web-blog/createArticle"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                      >
+                        Create Article
+                      </a>
+                      <div className="h-[1px] bg-black my-2 mx-auto w-[80%]"></div>
+                      <button
+                        onClick={handleSignOut}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 w-full text-left"
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <>
+                <button
+                  className="hidden lg:block bg-black text-white py-2 px-4 hover:bg-gray-100 hover:text-black transition duration-300"
+                  onClick={() => router.push("/signin")}
+                >
+                  Log In
+                </button>
+                <button
+                  className="lg:hidden text-white"
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 >
-                  {username}
+                  <FaBars />
                 </button>
-                {isMobileMenuOpen && (
-                  <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
-                    <a
-                      href="/web-blog/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                    >
-                      Profile
-                    </a>
-                    <a
-                      href="/web-blog/createArticle"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
-                    >
-                      Create Article
-                    </a>
-                    <div className="h-[1px] bg-black my-2 mx-auto w-[80%]"></div>
-                    <button
-                      onClick={handleSignOut}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 w-full text-left"
-                    >
-                      Sign Out
-                    </button>
-                  </div>
-                )}
-              </div>
-            </>
-          ) : (
-            <>
-              <button
-                className="hidden lg:block bg-black text-white py-2 px-4 hover:bg-gray-100 hover:text-black transition duration-300"
-                onClick={() => router.push("/signin")}
-              >
-                Log In
-              </button>
-              <button
-                className="lg:hidden text-white"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              >
-                <FaBars />
-              </button>
-            </>
-          )}
-        </nav>
-        {isMobileMenuOpen && (
-          <div className="lg:hidden fixed inset-0 z-50">
-            <div
-              className="fixed inset-0 bg-black bg-opacity-75 transition-opacity"
-              onClick={() => setIsMobileMenuOpen(false)}
-            ></div>
-            <div className="fixed inset-0 overflow-hidden">
-              <div className="absolute inset-0 overflow-hidden">
-                <div
-                  className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10"
-                  style={{ width: "80%" }}
-                >
+              </>
+            )}
+          </nav>
+          {isMobileMenuOpen && (
+            <div className="lg:hidden fixed inset-0 z-50">
+              <div
+                className="fixed inset-0 bg-black bg-opacity-75 transition-opacity"
+                onClick={() => setIsMobileMenuOpen(false)}
+              ></div>
+              <div className="fixed inset-0 overflow-hidden">
+                <div className="absolute inset-0 overflow-hidden">
                   <div
-                    className={`pointer-events-auto w-screen max-w-md transform transition ease-in-out duration-500 ${
-                      isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
-                    }`}
+                    className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10"
+                    style={{ width: "80%" }}
                   >
-                    <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-                      <div className="px-4 py-6">
-                        <div className="flex items-center justify-between">
-                          <h2 className="text-lg font-medium text-gray-900">
-                            Menu
-                          </h2>
-                          <div className="-mr-2">
-                            <button
-                              type="button"
-                              className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-                              onClick={() => setIsMobileMenuOpen(false)}
-                            >
-                              <span className="sr-only">Close menu</span>
-                              <svg
-                                className="h-6 w-6"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                aria-hidden="true"
+                    <div
+                      className={`pointer-events-auto w-screen max-w-md transform transition ease-in-out duration-500 ${
+                        isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+                      }`}
+                    >
+                      <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+                        <div className="px-4 py-6">
+                          <div className="flex items-center justify-between">
+                            <h2 className="text-lg font-medium text-gray-900">
+                              Menu
+                            </h2>
+                            <div className="-mr-2">
+                              <button
+                                type="button"
+                                className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                                onClick={() => setIsMobileMenuOpen(false)}
                               >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M6 18L18 6M6 6l12 12"
-                                />
-                              </svg>
-                            </button>
+                                <span className="sr-only">Close menu</span>
+                                <svg
+                                  className="h-6 w-6"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  aria-hidden="true"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M6 18L18 6M6 6l12 12"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="mt-6 px-4">
-                        <nav className="grid gap-y-8">
-                          {categories.map((category: ICategory) => (
-                            <a
-                              key={category.id}
-                              href="#blogs"
-                              className={`text-white hover:text-gray-300 cursor-pointer ${
-                                selectedCategory === category.title
-                                  ? "font-bold"
-                                  : ""
-                              }`}
-                              onClick={() =>
-                                category.title &&
-                                handleCategoryClick(category.title)
-                              }
-                            >
-                              <span className="ml-3 text-base font-medium text-gray-900">
-                                {category.title}
-                              </span>
-                            </a>
-                          ))}
-                        </nav>
-                      </div>
-                      {!isLoggedIn && (
                         <div className="mt-6 px-4">
-                          <button
-                            className="block w-full px-5 py-3 text-center font-medium text-white bg-black hover:bg-gray-300 hover:text-black transition duration-300"
-                            onClick={() => router.push("/signin")}
-                          >
-                            Log In
-                          </button>
+                          <nav className="grid gap-y-8">
+                            {categories.map((category: ICategory) => (
+                              <a
+                                key={category.id}
+                                href="#blogs"
+                                className={`text-white hover:text-gray-300 cursor-pointer ${
+                                  selectedCategory === category.title
+                                    ? "font-bold"
+                                    : ""
+                                }`}
+                                onClick={() =>
+                                  category.title &&
+                                  handleCategoryClick(category.title)
+                                }
+                              >
+                                <span className="ml-3 text-base font-medium text-gray-900">
+                                  {category.title}
+                                </span>
+                              </a>
+                            ))}
+                          </nav>
                         </div>
-                      )}
+                        {!isLoggedIn && (
+                          <div className="mt-6 px-4">
+                            <button
+                              className="block w-full px-5 py-3 text-center font-medium text-white bg-black hover:bg-gray-300 hover:text-black transition duration-300"
+                              onClick={() => router.push("/signin")}
+                            >
+                              Log In
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
-      </Container>
+          )}
+        </Container>
+      )}
     </section>
   );
 };
