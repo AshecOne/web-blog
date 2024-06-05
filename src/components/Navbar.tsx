@@ -418,7 +418,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
                             {categories.map((category: ICategory) => (
                               <a
                                 key={category.id}
-                                href="#blogs"
+                                href="blogs"
                                 className={`text-white hover:text-gray-300 cursor-pointer ${
                                   selectedCategory === category.title
                                     ? "font-bold"
