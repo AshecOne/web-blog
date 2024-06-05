@@ -62,9 +62,23 @@ const Blog: React.FunctionComponent<IBlogProps> = ({
           <h2 style={{ fontSize: "24px", fontWeight: "bold", marginBottom: "8px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{title}</h2>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            {getInitials(writer)}
+            <div
+              style={{
+                width: "48px",
+                height: "48px",
+                borderRadius: "50%",
+                backgroundColor: "#E5E7EB",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "18px",
+                fontWeight: "bold",
+              }}
+            >
+              {getInitials(writer)}
+            </div>
               <div>
-                <span style={{ fontWeight: "600", color: "black" }}>{writer}</span>
+                <span style={{ fontWeight: "600", color: "black", marginLeft: "8px" }}>{writer}</span>
               </div>
             </div>
             <div style={{ display: "flex", alignItems: "center", fontSize: "12px", color: "#6B7280" }}>
@@ -75,9 +89,9 @@ const Blog: React.FunctionComponent<IBlogProps> = ({
               </div>
             </div>
           </div>
-          <p style={{ color: "#374151", marginBottom: "12px", overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: "3", WebkitBoxOrient: "vertical" }}>{desc}</p>
+          <p style={{ color: "#374151", marginBottom: "6px", overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: "3", WebkitBoxOrient: "vertical" }}>{desc}</p>
         </div>
-        <div style={{ marginTop: "8px" }}>
+        <div>
           <span style={{ fontWeight: "bold", color: "black", cursor: "pointer", textDecoration: "underline", transition: "color 0.3s" }} className="hover:text-gray-600">
             View Post
           </span>
