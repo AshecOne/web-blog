@@ -198,7 +198,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
                 onClick={() => router.push("/")}
               />
             </div>
-            <ul className="hidden md:text-sm md:pl-5 lg:flex gap-4">
+            <ul className={`hidden md:text-sm md:pl-5 lg:flex gap-4 ${showSearch ? "hidden" : ""}`}>
               {categories.map((category: ICategory) => (
                 <li
                   key={category.id}
@@ -243,19 +243,19 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
                   )}
                 </div>
               ) : (
-                <IoSearchOutline
-                  size="1.5em"
-                  className="text-white m:mr-6 cursor-pointer"
-                  onClick={handleSearchClick}
-                />
-              )}
-              {!showSearch && (
-                <button
-                  className="hidden m:block bg-black text-white py-1 px-3 hover:bg-gray-100 hover:text-black transition duration-300"
-                  onClick={() => alert("GET YOUR 120$ CHRISTMAS GIFT")}
-                >
-                  GET YOUR 120$ CHRISTMAS GIFT
-                </button>
+                <>
+                  <IoSearchOutline
+                    size="1.5em"
+                    className="text-white m:mr-6 cursor-pointer"
+                    onClick={handleSearchClick}
+                  />
+                  <button
+                    className="hidden m:block bg-black text-white py-1 px-3 hover:bg-gray-100 hover:text-black transition duration-300"
+                    onClick={() => alert("GET YOUR 120$ CHRISTMAS GIFT")}
+                  >
+                    GET YOUR 120$ CHRISTMAS GIFT
+                  </button>
+                </>
               )}
             </div>
             {isLoading ? (
@@ -418,7 +418,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
                             {categories.map((category: ICategory) => (
                               <a
                                 key={category.id}
-                                href="blogs"
+                                href="#blogs"
                                 className={`text-white hover:text-gray-300 cursor-pointer ${
                                   selectedCategory === category.title
                                     ? "font-bold"
