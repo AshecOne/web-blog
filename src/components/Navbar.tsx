@@ -1,19 +1,13 @@
 "use client";
 import * as React from "react";
-import { IoSearchOutline } from "react-icons/io5";
+import { IoSearchOutline, IoCloseOutline } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import Container from "./Container";
-import { useAppSelector } from "@/lib/hooks";
-import { useAppDispatch } from "@/lib/hooks";
-import { setSuccessLogin } from "@/lib/features/userSlice";
-import { resetUserState } from "@/lib/features/userSlice";
-import { getCategory } from "@/lib/features/categorySlice";
+import { useAppSelector, useAppDispatch } from "@/lib/hooks";
+import { setSuccessLogin, resetUserState } from "@/lib/features/userSlice";
+import { getCategory, setSelectedCategoryAction, ICategory } from "@/lib/features/categorySlice";
 import axios from "axios";
 import { FaBars } from "react-icons/fa";
-import {
-  setSelectedCategoryAction,
-  ICategory,
-} from "@/lib/features/categorySlice";
 
 interface INavbarProps {}
 
@@ -40,9 +34,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
   const username = useAppSelector((state) => state.userReducer.username);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const { categories } = useAppSelector((state) => state.categoryReducer);
-  const selectedCategory = useAppSelector(
-    (state) => state.categoryReducer.selectedCategory
-  );
+  const selectedCategory = useAppSelector((state) => state.categoryReducer.selectedCategory);
   const [showSearch, setShowSearch] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [searchResults, setSearchResults] = React.useState<IArticle[]>([]);
@@ -71,7 +63,9 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
   };
 
   const handleSearchClick = () => {
-    setShowSearch(true);
+    setShowSearch(!showSearch);
+    setSearchQuery("");
+    setSearchResults([]);
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -220,13 +214,13 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
               ))}
             </ul>
             <div className="m:flex m:ml-14 md:-ml-16 lg:pl-16 lg:flex items-center">
-              <IoSearchOutline
-                size="1.5em"
-                className="text-white m:mr-6 cursor-pointer"
-                onClick={handleSearchClick}
-              />
               {showSearch ? (
                 <div className="relative">
+                  <IoCloseOutline
+                    size="1.5em"
+                    className="text-white m:mr-6 cursor-pointer"
+                    onClick={handleSearchClick}
+                  />
                   <input
                     type="text"
                     placeholder="Search articles..."
@@ -249,9 +243,16 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
                   )}
                 </div>
               ) : (
+                <IoSearchOutline
+                  size="1.5em"
+                  className="text-white m:mr-6 cursor-pointer"
+                  onClick={handleSearchClick}
+                />
+              )}
+              {!showSearch && (
                 <button
                   className="hidden m:block bg-black text-white py-1 px-3 hover:bg-gray-100 hover:text-black transition duration-300"
-                  onClick={handleSearchClick}
+                  onClick={() => alert("GET YOUR 120$ CHRISTMAS GIFT")}
                 >
                   GET YOUR 120$ CHRISTMAS GIFT
                 </button>
