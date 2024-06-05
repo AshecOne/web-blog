@@ -37,10 +37,15 @@ const Profil: React.FunctionComponent = () => {
   const handleSave = async () => {
     try {
       const response = await axios.put(
-        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/users/${user.id}`,
-        editedUser
+        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/users`,
+        editedUser,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("user-token")}`,
+          },
+        }
       );
-      dispatch(setSuccessLogin(response.data));
+      dispatch(setSuccessLogin(response.data.data));
       setEditMode(false);
       toast.success("Profil berhasil diperbarui!", {
         position: "top-right",
@@ -85,7 +90,7 @@ const Profil: React.FunctionComponent = () => {
             <div className="flex items-center justify-center mb-6">
               <FaUser className="text-4xl text-gray-400" />
             </div>
-            <h1 className="text-2xl font-bold mb-4">Profil</h1>
+            <h1 className="text-2xl font-bold mb-4">Profile</h1>
             <hr className="mb-6" />
             {editMode ? (
               <div>
