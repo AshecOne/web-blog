@@ -267,16 +267,6 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
                         <div className="px-4 py-2 text-red-500">
                           {searchError}
                         </div>
-                      ) : searchResults.length > 0 ? (
-                        searchResults.map((article) => (
-                          <div
-                            key={article.id}
-                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                            onClick={() => handleArticleClick(article.id)}
-                          >
-                            {article.title}
-                          </div>
-                        ))
                       ) : (
                         <div className="px-4 py-2">No articles found.</div>
                       )}
