@@ -231,21 +231,21 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
             </ul>
             <div className="m:flex m:ml-14 md:-ml-16 lg:pl-16 lg:flex items-center">
               {showSearch ? (
-                <div className="relative">
-                  <IoCloseOutline
-                    size="1.5em"
-                    className="text-white cursor-pointer"
-                    onClick={handleSearchClick}
-                  />
+                <div className="relative flex items-center">
                   <input
                     type="text"
                     placeholder="Search articles..."
                     value={searchQuery}
                     onChange={handleSearchChange}
-                    className="bg-white text-black py-1 px-3"
+                    className="bg-white text-black py-1 px-3 rounded-l"
+                  />
+                  <IoCloseOutline
+                    size="1.5em"
+                    className="text-white cursor-pointer bg-gray-500 p-1 rounded-r"
+                    onClick={handleSearchClick}
                   />
                   {searchResults.length > 0 && (
-                    <div className="absolute mt-2 w-full bg-white rounded-md shadow-lg z-10">
+                    <div className="absolute top-full mt-2 w-full bg-white rounded-md shadow-lg z-10">
                       {searchResults.map((article) => (
                         <div
                           key={article.id}
@@ -265,14 +265,16 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
                     className="text-white cursor-pointer mr-4"
                     onClick={handleSearchClick}
                   />
-                  <button
-                    className={`bg-black text-white py-1 px-3 hover:bg-gray-100 hover:text-black transition duration-300 ${
-                      showSearch ? "hidden" : ""
-                    }`}
-                    onClick={() => alert("GET YOUR 120$ CHRISTMAS GIFT")}
-                  >
-                    GET YOUR 120$ CHRISTMAS GIFT
-                  </button>
+                  <div className="hidden lg:block">
+                    <button
+                      className={`bg-black text-white py-1 px-3 hover:bg-gray-100 hover:text-black transition duration-300 ${
+                        showSearch ? "hidden" : ""
+                      }`}
+                      onClick={() => alert("GET YOUR 120$ CHRISTMAS GIFT")}
+                    >
+                      GET YOUR 120$ CHRISTMAS GIFT
+                    </button>
+                  </div>
                 </>
               )}
             </div>
