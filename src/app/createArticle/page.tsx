@@ -75,7 +75,7 @@ const CreateArticle: React.FunctionComponent = () => {
       }
       const token = localStorage.getItem("user-token");
       const response = await axios.post(
-        "https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles",
+        "https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/users",
         {
           ...article,
           categoryId: article.category,

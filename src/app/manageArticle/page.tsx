@@ -51,7 +51,7 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
       try {
         const token = localStorage.getItem("user-token");
         const response = await axios.get(
-          `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles`,
+          `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/users`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -76,7 +76,7 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
       try {
         const token = localStorage.getItem("user-token");
         const response = await axios.put(
-          `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles/${editData.id}`,
+          `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/users/${editData.id}`,
           editData,
           {
             headers: {
@@ -108,7 +108,7 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
       try {
         const token = localStorage.getItem("user-token");
         await axios.delete(
-          `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles/${deleteId}`,
+          `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/users/${deleteId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
