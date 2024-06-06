@@ -57,7 +57,7 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
   const getCategory = async () => {
     try {
       const response = await axios.get(
-        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/category`
+        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/categories`
       );
       dispatch(setCategoryAction(response.data));
     } catch (error) {
