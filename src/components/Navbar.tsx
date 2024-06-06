@@ -256,7 +256,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
                     placeholder="Search articles..."
                     value={searchQuery}
                     onChange={handleSearchChange}
-                    className="bg-white text-black py-1 px-3 rounded-l"
+                    className="bg-white text-black py-1 px-3 rounded"
                   />
 
                   {searchQuery !== "" && (
