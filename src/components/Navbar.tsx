@@ -44,6 +44,8 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
   const [showSearch, setShowSearch] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [searchResults, setSearchResults] = React.useState<IArticle[]>([]);
+  const [isSearchLoading, setIsSearchLoading] = React.useState(false);
+  const [searchError, setSearchError] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     if (typeof window !== "undefined") {
@@ -90,12 +92,24 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
 
   const searchArticles = async (query: string) => {
     try {
+      setIsSearchLoading(true);
+      setSearchError(null);
+
       const response = await axios.get<{ data: IArticle[] }>(
         `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles/search?query=${query}`
       );
-      setSearchResults(response.data.data);
+
+      if (response.data.data.length === 0) {
+        setSearchResults([]);
+        setSearchError("No articles found.");
+      } else {
+        setSearchResults(response.data.data);
+      }
     } catch (error) {
       console.error(error);
+      setSearchError("An error occurred while searching for articles.");
+    } finally {
+      setIsSearchLoading(false);
     }
   };
 
@@ -232,6 +246,11 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
             <div className="m:flex m:ml-14 md:-ml-16 lg:pl-16 lg:flex items-center">
               {showSearch ? (
                 <div className="relative flex items-center">
+                  <IoCloseOutline
+                    size="1.5em"
+                    className="text-white cursor-pointer mr-4"
+                    onClick={handleSearchClick}
+                  />
                   <input
                     type="text"
                     placeholder="Search articles..."
@@ -239,22 +258,28 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
                     onChange={handleSearchChange}
                     className="bg-white text-black py-1 px-3 rounded-l"
                   />
-                  <IoCloseOutline
-                    size="1.5em"
-                    className="text-white cursor-pointer bg-gray-500 p-1 rounded-r"
-                    onClick={handleSearchClick}
-                  />
-                  {searchResults.length > 0 && (
+
+                  {searchQuery !== "" && (
                     <div className="absolute top-full mt-2 w-full bg-white rounded-md shadow-lg z-10">
-                      {searchResults.map((article) => (
-                        <div
-                          key={article.id}
-                          className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                          onClick={() => handleArticleClick(article.id)}
-                        >
-                          {article.title}
+                      {isSearchLoading ? (
+                        <div className="px-4 py-2">Loading...</div>
+                      ) : searchError ? (
+                        <div className="px-4 py-2 text-red-500">
+                          {searchError}
                         </div>
-                      ))}
+                      ) : searchResults.length > 0 ? (
+                        searchResults.map((article) => (
+                          <div
+                            key={article.id}
+                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                            onClick={() => handleArticleClick(article.id)}
+                          >
+                            {article.title}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="px-4 py-2">No articles found.</div>
+                      )}
                     </div>
                   )}
                 </div>
