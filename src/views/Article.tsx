@@ -35,7 +35,9 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
 
   const getArticles = async () => {
     try {
-      const response = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/blogs`);
+      const response = await axios.get(
+        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/blogs`
+      );
       console.log("Fetched articles:", response.data.data);
       setArticles(response.data.data);
     } catch (error) {
@@ -45,7 +47,9 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
 
   const getCategories = async () => {
     try {
-      const response = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/categories/blogs`);
+      const response = await axios.get(
+        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/categories/blogs`
+      );
       console.log("Fetched categories:", response.data.data);
       setCategories(response.data.data);
     } catch (error) {
@@ -84,7 +88,8 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
                 }`}
                 onClick={() => handleCategoryClick(category.title)}
               >
-                {category.title.charAt(0).toUpperCase() + category.title.slice(1)}
+                {category.title.charAt(0).toUpperCase() +
+                  category.title.slice(1)}
               </div>
             ))
           ) : (
