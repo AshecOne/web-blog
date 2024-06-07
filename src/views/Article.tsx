@@ -8,13 +8,12 @@ interface IArticleProps {}
 
 interface IArticle {
   id: string;
-  author: {
-    username: string;
-  };
+  author: string;
   title: string;
   urlImage: string;
   description: string;
   createdAt: string;
+  linkUrl: string; 
   category: {
     title: string;
   };
@@ -36,7 +35,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
 
   const getArticles = async () => {
     try {
-      const response = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles`);
+      const response = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/blogs`);
       console.log("Fetched articles:", response.data.data);
       setArticles(response.data.data);
     } catch (error) {
@@ -46,7 +45,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
 
   const getCategories = async () => {
     try {
-      const response = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/categories`);
+      const response = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/categories/blogs`);
       console.log("Fetched categories:", response.data.data);
       setCategories(response.data.data);
     } catch (error) {
@@ -107,7 +106,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
         {selectedCategory !== "" && filteredArticles.length === 0 && (
           <div className="flex flex-col justify-center items-center mt-6 mb-6">
             <img
-              src="/empty.png"
+              src="https://ashecone.github.io/web-blog/empty.png"
               alt="Article Empty"
               style={{ width: "100px" }}
             />
@@ -126,11 +125,13 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
                 date: mainPost.createdAt,
                 title: mainPost.title,
                 description: mainPost.description,
+                linkUrl: mainPost.linkUrl, 
               }}
               subPosts={subPosts.map((post) => ({
                 image: post.urlImage,
                 date: post.createdAt,
                 title: post.title,
+                linkUrl: post.linkUrl, 
               }))}
             />
             {mangaReads.length > 0 && (
@@ -139,6 +140,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
                   image: post.urlImage,
                   title: post.title,
                   date: post.createdAt,
+                  linkUrl: post.linkUrl, 
                 }))}
               />
             )}
