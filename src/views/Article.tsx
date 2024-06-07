@@ -25,7 +25,7 @@ interface ICategory {
 }
 
 const Article: React.FunctionComponent<IArticleProps> = (props) => {
-  const [selectedCategory, setSelectedCategory] = React.useState<string>("");
+  const [selectedCategory, setSelectedCategory] = React.useState<string>("LW");
   const [articles, setArticles] = React.useState<IArticle[]>([]);
   const [categories, setCategories] = React.useState<ICategory[]>([]);
 
@@ -88,7 +88,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
   const shuffledArticles = shuffleArray([...filteredArticles]);
 
   const mainPost = shuffledArticles.length > 0 ? shuffledArticles[0] : null;
-  const subPosts = shuffledArticles.slice(1, 5);
+  const subPosts = shuffledArticles.slice(1, 6);
   const mangaReads = shuffledArticles.slice(0, 4);
 
   return (
