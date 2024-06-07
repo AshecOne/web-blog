@@ -7,12 +7,14 @@ interface IPostProps {
     title: string;
     description: string;
     linkUrl: string;
+    author: string;
   };
   subPosts: {
     image: string;
     date: string; 
     title: string;
     linkUrl: string;
+    author: string;
   }[];
 }
 
@@ -44,6 +46,7 @@ const Post: React.FunctionComponent<IPostProps> = (props) => {
         <div className="p-4">
           <p className="text-gray-500 mb-3 text-sm">{formatDate(props.mainPost.date)}</p>
           <h2 className="text-2xl mb-3 text-black font-bold">{props.mainPost.title}</h2>
+          <p className="text-gray-500 mb-3 text-sm">By {props.mainPost.author}</p>
           <p className="mt-2 mb-6 text-gray-600">{props.mainPost.description}</p>
           <span
             className="text-md mt-1 text-black font-bold cursor-pointer underline transition duration-300"
@@ -67,6 +70,7 @@ const Post: React.FunctionComponent<IPostProps> = (props) => {
             <div>
               <h3 className="text-md mt-3 text-black font-bold">{subPost.title}</h3>
               <p className="text-gray-500 text-sm">{formatDate(subPost.date)}</p>
+              <p className="text-gray-500 text-sm">By {subPost.author}</p>
             </div>
           </div>
         ))}

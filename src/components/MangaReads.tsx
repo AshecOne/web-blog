@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 interface IMangaReadsProps {
   posts: {
@@ -6,6 +6,7 @@ interface IMangaReadsProps {
     title: string;
     date: string;
     linkUrl: string;
+    author: string;
   }[];
 }
 
@@ -33,12 +34,13 @@ const MangaReads: React.FunctionComponent<IMangaReadsProps> = (props) => {
             src={post.image}
             alt={post.title}
             className="object-cover rounded-lg cursor-pointer transition duration-300 ease-in-out transform hover:scale-110"
-            style={{height:'160px', width:'200px'}}
+            style={{ height: "160px", width: "200px" }}
             onClick={() => handleNavigation(post.linkUrl)}
           />
           <div>
             <h3 className="text-lg text-black font-bold">{post.title}</h3>
             <p className="text-gray-500 text-sm">{formatDate(post.date)}</p>
+            <p className="text-gray-500 text-sm">By {post.author}</p>
           </div>
         </div>
       ))}

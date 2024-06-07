@@ -115,12 +115,14 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
                 title: mainPost.title,
                 description: mainPost.description,
                 linkUrl: mainPost.linkUrl,
+                author: mainPost.author,
               }}
               subPosts={subPosts.map((post) => ({
                 image: post.urlImage,
                 date: post.createdAt,
                 title: post.title,
                 linkUrl: post.linkUrl,
+                author: post.author,
               }))}
             />
             {mangaReads.length > 0 && (
@@ -130,6 +132,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
                   title: post.title,
                   date: post.createdAt,
                   linkUrl: post.linkUrl,
+                  author: post.author,
                 }))}
               />
             )}
