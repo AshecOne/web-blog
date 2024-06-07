@@ -43,6 +43,7 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
       const response = await axios.get(
         `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles`
       );
+      console.log("Fetched articles:", response.data.data);
       setArticles(response.data.data);
     } catch (error) {
       console.log(error);
@@ -59,7 +60,8 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
       const response = await axios.get(
         `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/categories`
       );
-      dispatch(setCategoryAction(response.data));
+      console.log("Fetched categories:", response.data.data);
+      dispatch(setCategoryAction(response.data.data));
     } catch (error) {
       console.log(error);
     }
@@ -99,20 +101,24 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
             >
               All
             </button>
-            {category.map((cat: ICategory) => (
-              <button
-                key={cat.id}
-                style={{
-                  padding: "0.5rem 1rem",
-                  borderRadius: "0.25rem",
-                  borderBottom:
-                    selectedCategory === cat.title ? "4px solid black" : "none",
-                }}
-                onClick={() => cat.title && handleCategoryClick(cat.title)}
-              >
-                {cat.title}
-              </button>
-            ))}
+            {Array.isArray(category) ? (
+              category.map((cat: ICategory) => (
+                <button
+                  key={cat.id}
+                  style={{
+                    padding: "0.5rem 1rem",
+                    borderRadius: "0.25rem",
+                    borderBottom:
+                      selectedCategory === cat.title ? "4px solid black" : "none",
+                  }}
+                  onClick={() => cat.title && handleCategoryClick(cat.title)}
+                >
+                  {cat.title}
+                </button>
+              ))
+            ) : (
+              <button className="text-black">No categories found.</button>
+            )}
           </div>
         </div>
         <div

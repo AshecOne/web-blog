@@ -37,6 +37,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
   const getArticles = async () => {
     try {
       const response = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles`);
+      console.log("Fetched articles:", response.data.data);
       setArticles(response.data.data);
     } catch (error) {
       console.log(error);
@@ -46,6 +47,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
   const getCategories = async () => {
     try {
       const response = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/categories`);
+      console.log("Fetched categories:", response.data.data);
       setCategories(response.data.data);
     } catch (error) {
       console.log(error);
@@ -83,19 +85,23 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
           >
             All
           </div>
-          {categories.map((category) => (
-            <div
-              key={category.id}
-              className={`pb-2 mx-4 px-4 font-bold cursor-pointer ${
-                selectedCategory === category.title
-                  ? "border-b-2 border-black"
-                  : "hover:border-b-2 hover:border-black"
-              }`}
-              onClick={() => handleCategoryClick(category.title)}
-            >
-              {category.title}
-            </div>
-          ))}
+          {Array.isArray(categories) ? (
+            categories.map((category) => (
+              <div
+                key={category.id}
+                className={`pb-2 mx-4 px-4 font-bold cursor-pointer ${
+                  selectedCategory === category.title
+                    ? "border-b-2 border-black"
+                    : "hover:border-b-2 hover:border-black"
+                }`}
+                onClick={() => handleCategoryClick(category.title)}
+              >
+                {category.title}
+              </div>
+            ))
+          ) : (
+            <div className="text-black">No categories found.</div>
+          )}
         </div>
 
         {selectedCategory !== "" && filteredArticles.length === 0 && (
