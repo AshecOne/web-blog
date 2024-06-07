@@ -35,7 +35,9 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
 
   const getArticles = async () => {
     try {
-      const response = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/blogs`);
+      const response = await axios.get(
+        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/blogs`
+      );
       console.log("Fetched articles:", response.data.data);
       setArticles(response.data.data);
     } catch (error) {
@@ -45,7 +47,9 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
 
   const getCategories = async () => {
     try {
-      const response = await axios.get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/categories/blogs`);
+      const response = await axios.get(
+        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/categories/blogs`
+      );
       console.log("Fetched categories:", response.data.data);
       setCategories(response.data.data);
     } catch (error) {
@@ -63,17 +67,29 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
     ACT: "Astral Codex Ten",
     SSC: "Slate Star Codex",
     Interfluidity: "Interfluidity",
-    More: "More",
+    More: "More Articles",
   };
 
   const filteredArticles =
     selectedCategory === ""
       ? articles
-      : articles.filter((article) => article.category.title === selectedCategory);
+      : articles.filter(
+          (article) => article.category.title === selectedCategory
+        );
 
-  const mainPost = filteredArticles.length > 0 ? filteredArticles[0] : null;
-  const subPosts = filteredArticles.slice(1, 5);
-  const mangaReads = filteredArticles.slice(0, 3);
+  const shuffleArray = (array: IArticle[]) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
+
+  const shuffledArticles = shuffleArray([...filteredArticles]);
+
+  const mainPost = shuffledArticles.length > 0 ? shuffledArticles[0] : null;
+  const subPosts = shuffledArticles.slice(1, 5);
+  const mangaReads = shuffledArticles.slice(0, 4);
 
   return (
     <section id="article" className="bg-white mt-10 mb-6 pb-5">
@@ -90,7 +106,8 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
                 }`}
                 onClick={() => handleCategoryClick(category.title)}
               >
-                {category.title.charAt(0).toUpperCase() + category.title.slice(1)}
+                {category.title.charAt(0).toUpperCase() +
+                  category.title.slice(1)}
               </div>
             ))
           ) : (
@@ -98,16 +115,22 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
           )}
         </div>
 
-        {selectedCategory !== "" && filteredArticles.length === 0 && (
+        {selectedCategory !== "" && shuffledArticles.length === 0 && (
           <div className="flex flex-col justify-center items-center mt-6 mb-6">
-            <img src="https://ashecone.github.io/web-blog/empty.png" alt="Article Empty" style={{ width: "100px" }} />
+            <img
+              src="https://ashecone.github.io/web-blog/empty.png"
+              alt="Article Empty"
+              style={{ width: "100px" }}
+            />
             <p className="text-gray-500">Article Empty</p>
           </div>
         )}
 
         {mainPost && (
           <div className="mt-4 pt-3">
-            <h2 className="text-2xl font-bold mb-4">{categoryTitles[selectedCategory] || "Articles"}</h2>
+            <h2 className="text-2xl font-bold mb-4">
+              {categoryTitles[selectedCategory]}
+            </h2>
             <div className="flex space-x-2" style={{ overflowX: "scroll" }}>
               <Post
                 mainPost={{
@@ -120,7 +143,6 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
                 }}
                 subPosts={subPosts.map((post) => ({
                   image: post.urlImage,
-                  date: post.date,
                   title: post.title,
                   linkUrl: post.linkUrl,
                   author: post.author,

@@ -11,7 +11,6 @@ interface IPostProps {
   };
   subPosts: {
     image: string;
-    date: string;
     title: string;
     linkUrl: string;
     author: string;
@@ -69,7 +68,6 @@ const Post: React.FunctionComponent<IPostProps> = (props) => {
             />
             <div>
               <h3 className="text-md mt-3 text-black font-bold">{subPost.title}</h3>
-              <p className="text-gray-500 text-sm">{formatDate(subPost.date)}</p>
               <p className="text-gray-500 text-sm">By {subPost.author}</p>
             </div>
           </div>
