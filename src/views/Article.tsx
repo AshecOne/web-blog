@@ -13,7 +13,7 @@ interface IArticle {
   urlImage: string;
   description: string;
   createdAt: string;
-  linkUrl: string; 
+  linkUrl: string;
   category: {
     title: string;
   };
@@ -73,17 +73,6 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
     <section id="article" className="bg-white mt-10 mb-6 pb-5">
       <Container>
         <div className="flex mt-4 pt-3 border-b border-black">
-          <div
-            key="all"
-            className={`pb-2 mx-4 px-4 font-bold cursor-pointer ${
-              selectedCategory === ""
-                ? "border-b-2 border-black"
-                : "hover:border-b-2 hover:border-black"
-            }`}
-            onClick={() => handleCategoryClick("")}
-          >
-            All
-          </div>
           {Array.isArray(categories) ? (
             categories.map((category) => (
               <div
@@ -95,7 +84,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
                 }`}
                 onClick={() => handleCategoryClick(category.title)}
               >
-                {category.title}
+                {category.title.charAt(0).toUpperCase() + category.title.slice(1)}
               </div>
             ))
           ) : (
@@ -125,13 +114,13 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
                 date: mainPost.createdAt,
                 title: mainPost.title,
                 description: mainPost.description,
-                linkUrl: mainPost.linkUrl, 
+                linkUrl: mainPost.linkUrl,
               }}
               subPosts={subPosts.map((post) => ({
                 image: post.urlImage,
                 date: post.createdAt,
                 title: post.title,
-                linkUrl: post.linkUrl, 
+                linkUrl: post.linkUrl,
               }))}
             />
             {mangaReads.length > 0 && (
@@ -140,7 +129,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
                   image: post.urlImage,
                   title: post.title,
                   date: post.createdAt,
-                  linkUrl: post.linkUrl, 
+                  linkUrl: post.linkUrl,
                 }))}
               />
             )}

@@ -5,7 +5,7 @@ interface IMangaReadsProps {
     image: string;
     title: string;
     date: string;
-    linkUrl: string; 
+    linkUrl: string;
   }[];
 }
 
@@ -20,8 +20,8 @@ const MangaReads: React.FunctionComponent<IMangaReadsProps> = (props) => {
     return new Date(dateString).toLocaleDateString("id-ID", options);
   };
 
-  const handleClick = (linkUrl: string) => {
-    window.location.href = linkUrl;
+  const handleNavigation = (url: string) => {
+    window.location.href = url;
   };
 
   return (
@@ -29,12 +29,12 @@ const MangaReads: React.FunctionComponent<IMangaReadsProps> = (props) => {
       <h2 className="text-2xl font-bold">Manga reads</h2>
       {props.posts.map((post, index) => (
         <div key={index} className="flex gap-4">
-          <img 
-            src={post.image} 
-            alt={post.title} 
-            className="object-cover rounded-lg cursor-pointer transition duration-300 ease-in-out transform hover:scale-110" 
-            style={{ height: '160px', width: '200px' }}
-            onClick={() => handleClick(post.linkUrl)} 
+          <img
+            src={post.image}
+            alt={post.title}
+            className="object-cover rounded-lg cursor-pointer transition duration-300 ease-in-out transform hover:scale-110"
+            style={{height:'160px', width:'200px'}}
+            onClick={() => handleNavigation(post.linkUrl)}
           />
           <div>
             <h3 className="text-lg text-black font-bold">{post.title}</h3>
