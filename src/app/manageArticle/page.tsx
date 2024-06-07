@@ -58,7 +58,12 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
             },
           }
         );
-        setArticles(response.data.data);
+        console.log("Fetched articles:", response.data.data);
+        if (Array.isArray(response.data.data)) {
+          setArticles(response.data.data);
+        } else {
+          console.error("Expected data to be an array");
+        }
       } catch (error) {
         console.error("Failed to fetch articles:", error);
       }
@@ -124,6 +129,7 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
       }
     }
   };
+
   const handleCancel = () => {
     setEditId(null);
     setEditData(null);
