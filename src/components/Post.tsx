@@ -32,6 +32,13 @@ const Post: React.FunctionComponent<IPostProps> = (props) => {
     window.location.href = url;
   };
 
+  const truncateTitle = (title: string, maxLength: number) => {
+    if (title.length > maxLength) {
+      return title.slice(0, maxLength) + "...";
+    }
+    return title;
+  };
+
   return (
     <div className="flex space-y-4 px-5 py-5 border">
       <div className="w-[580px]">
@@ -67,7 +74,7 @@ const Post: React.FunctionComponent<IPostProps> = (props) => {
               onClick={() => handleNavigation(subPost.linkUrl)}
             />
             <div>
-              <h3 className="text-md mt-3 text-black font-bold">{subPost.title}</h3>
+              <h3 className="text-md mt-3 text-black font-bold">{truncateTitle(subPost.title, 30)}</h3>
               <p className="text-gray-500 text-sm">By {subPost.author}</p>
             </div>
           </div>

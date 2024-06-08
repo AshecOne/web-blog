@@ -25,6 +25,13 @@ const MangaReads: React.FunctionComponent<IMangaReadsProps> = (props) => {
     window.location.href = url;
   };
 
+  const truncateTitle = (title: string, maxLength: number) => {
+    if (title.length > maxLength) {
+      return title.slice(0, maxLength) + "...";
+    }
+    return title;
+  };
+
   return (
     <div className="space-y-4 px-5 py-5 border">
       <h2 className="text-2xl font-bold">Manga reads</h2>
@@ -38,7 +45,7 @@ const MangaReads: React.FunctionComponent<IMangaReadsProps> = (props) => {
             onClick={() => handleNavigation(post.linkUrl)}
           />
           <div>
-            <h3 className="text-lg text-black font-bold">{post.title}</h3>
+            <h3 className="text-lg text-black font-bold">{truncateTitle(post.title, 30)}</h3>
             <p className="text-gray-500 text-sm">{formatDate(post.date)}</p>
             <p className="text-gray-500 text-sm">By {post.author}</p>
           </div>
