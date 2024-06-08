@@ -1,4 +1,3 @@
-"use client";
 import * as React from "react";
 import { useAppSelector } from "@/lib/hooks";
 import { IArticle } from "@/lib/features/articleSlice";
@@ -22,7 +21,7 @@ const ArticleDetailClient: React.FunctionComponent = () => {
           day: "numeric",
         })}
       </p>
-      <img src={article.urlImage} alt={article.title} className="w-full h-auto mb-4" />
+      <img src={article.urlImage} alt={article.title} className="w-full h-auto mb-4 max-w-screen-md mx-auto" />
       <p className="text-gray-700 text-lg mb-6">{article.description}</p>
     </div>
   );

@@ -10,8 +10,8 @@ import {
   ICategory,
 } from "@/lib/features/categorySlice";
 import { setSelectedArticle, clearSelectedArticle } from "@/lib/features/articleSlice";
-import ArticleDetail from "../app/article/page";
 import { IArticle } from "@/lib/features/articleSlice";
+import ArticleDetailClient from "@/components/ArticleDetailClient";
 
 interface IBlogsProps {}
 
@@ -135,7 +135,7 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
             >
               Back to Blogs
             </button>
-            <ArticleDetail />
+            <ArticleDetailClient />
           </>
         ) : (
           <div
