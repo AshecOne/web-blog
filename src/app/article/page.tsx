@@ -2,11 +2,13 @@ import * as React from "react";
 import { useAppSelector } from "@/lib/hooks";
 import { IArticle } from "@/lib/features/articleSlice";
 
-interface IArticleDetailProps {
-  article: IArticle;
-}
+const ArticleDetail: React.FunctionComponent = () => {
+  const article = useAppSelector((state) => state.articleReducer.selectedArticle);
 
-const ArticleDetail: React.FunctionComponent<IArticleDetailProps> = ({ article }) => {
+  if (!article) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-4xl font-bold mb-4">{article.title}</h1>

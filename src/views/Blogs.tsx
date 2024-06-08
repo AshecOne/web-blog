@@ -120,7 +120,7 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
           </div>
         </div>
         {selectedArticle ? (
-          <ArticleDetail article={selectedArticle} />
+          <ArticleDetail />
         ) : (
           <div
             style={{
