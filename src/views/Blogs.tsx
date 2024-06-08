@@ -9,7 +9,7 @@ import {
   setSelectedCategoryAction,
   ICategory,
 } from "@/lib/features/categorySlice";
-import { setSelectedArticle } from "@/lib/features/articleSlice";
+import { setSelectedArticle, clearSelectedArticle } from "@/lib/features/articleSlice";
 import ArticleDetail from "../app/article/page";
 import { IArticle } from "@/lib/features/articleSlice";
 
@@ -32,6 +32,10 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
 
   const handleArticleClick = (article: IArticle) => {
     dispatch(setSelectedArticle(article));
+  };
+
+  const handleBackToBlogs = () => {
+    dispatch(clearSelectedArticle());
   };
 
   const getArticles = async () => {
@@ -84,43 +88,55 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
             <p className="text-gray-600">2.4M</p>
           </div>
         </div>
-        <div className="mb-6">
-          <div className="flex justify-center gap-6">
-            <button
-              style={{
-                padding: "0.5rem 1rem",
-                borderRadius: "0.25rem",
-                borderBottom:
-                  selectedCategory === "" ? "4px solid black" : "none",
-              }}
-              onClick={() => handleCategoryClick("")}
-            >
-              All
-            </button>
-            {Array.isArray(category) ? (
-              category.map((cat: ICategory) => (
-                <button
-                  key={cat.id}
-                  style={{
-                    padding: "0.5rem 1rem",
-                    borderRadius: "0.25rem",
-                    borderBottom:
-                      selectedCategory === cat.title
-                        ? "4px solid black"
-                        : "none",
-                  }}
-                  onClick={() => cat.title && handleCategoryClick(cat.title)}
-                >
-                  {cat.title}
-                </button>
-              ))
-            ) : (
-              <button className="text-black">No categories found.</button>
-            )}
+
+        {!selectedArticle && (
+          <div className="mb-6">
+            <div className="flex justify-center gap-6">
+              <button
+                style={{
+                  padding: "0.5rem 1rem",
+                  borderRadius: "0.25rem",
+                  borderBottom:
+                    selectedCategory === "" ? "4px solid black" : "none",
+                }}
+                onClick={() => handleCategoryClick("")}
+              >
+                All
+              </button>
+              {Array.isArray(category) ? (
+                category.map((cat: ICategory) => (
+                  <button
+                    key={cat.id}
+                    style={{
+                      padding: "0.5rem 1rem",
+                      borderRadius: "0.25rem",
+                      borderBottom:
+                        selectedCategory === cat.title
+                          ? "4px solid black"
+                          : "none",
+                    }}
+                    onClick={() => cat.title && handleCategoryClick(cat.title)}
+                  >
+                    {cat.title}
+                  </button>
+                ))
+              ) : (
+                <button className="text-black">No categories found.</button>
+              )}
+            </div>
           </div>
-        </div>
+        )}
+
         {selectedArticle ? (
-          <ArticleDetail />
+          <>
+            <button
+              className="mb-4 px-4 py-2 bg-gray-300 text-black rounded"
+              onClick={handleBackToBlogs}
+            >
+              Back to Blogs
+            </button>
+            <ArticleDetail />
+          </>
         ) : (
           <div
             style={{
@@ -168,6 +184,7 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
                   ))}
           </div>
         )}
+
         {selectedCategory !== "" &&
           articles.filter(
             (article) => article.category.title === selectedCategory
