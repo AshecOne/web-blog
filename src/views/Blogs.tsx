@@ -139,7 +139,6 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
                     date={article.createdAt}
                     sharing=""
                     desc={article.description}
-                    id={article.id} // Tambahkan id di sini
                   />
                 </div>
               ))
@@ -157,7 +156,6 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
                       date={article.createdAt}
                       sharing=""
                       desc={article.description}
-                      id={article.id} // Tambahkan id di sini
                     />
                   </div>
                 ))}
