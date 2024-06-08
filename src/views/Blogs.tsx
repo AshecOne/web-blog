@@ -4,31 +4,23 @@ import Container from "@/components/Container";
 import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import axios from "axios";
-import { setCategoryAction } from "@/lib/features/categorySlice";
 import {
+  setCategoryAction,
   setSelectedCategoryAction,
   ICategory,
 } from "@/lib/features/categorySlice";
+import { setSelectedArticle } from "@/lib/features/articleSlice";
+import ArticleDetail from "../app/article/page";
+import { IArticle } from "@/lib/features/articleSlice";
 
 interface IBlogsProps {}
-
-interface IArticle {
-  id: string;
-  author: {
-    username: string;
-  };
-  title: string;
-  urlImage: string;
-  description: string;
-  createdAt: string;
-  category: {
-    title: string;
-  };
-}
 
 const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
   const selectedCategory = useAppSelector(
     (state) => state.categoryReducer.selectedCategory
+  );
+  const selectedArticle = useAppSelector(
+    (state) => state.article.selectedArticle
   );
   const [articles, setArticles] = React.useState<IArticle[]>([]);
   const dispatch = useAppDispatch();
@@ -36,6 +28,10 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
 
   const handleCategoryClick = (category: string) => {
     dispatch(setSelectedCategoryAction(category));
+  };
+
+  const handleArticleClick = (article: IArticle) => {
+    dispatch(setSelectedArticle(article));
   };
 
   const getArticles = async () => {
@@ -109,7 +105,9 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
                     padding: "0.5rem 1rem",
                     borderRadius: "0.25rem",
                     borderBottom:
-                      selectedCategory === cat.title ? "4px solid black" : "none",
+                      selectedCategory === cat.title
+                        ? "4px solid black"
+                        : "none",
                   }}
                   onClick={() => cat.title && handleCategoryClick(cat.title)}
                 >
@@ -121,33 +119,22 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
             )}
           </div>
         </div>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "1rem",
-          }}
-        >
-          {selectedCategory === ""
-            ? articles.map((article) => (
-                <div key={article.id}>
-                  <Blog
-                    imgUrl={article.urlImage}
-                    imgAlt={article.title}
-                    title={article.title}
-                    writer={article.author.username}
-                    date={article.createdAt}
-                    sharing=""
-                    desc={article.description}
-                  />
-                </div>
-              ))
-            : articles
-                .filter(
-                  (article) => article.category.title === selectedCategory
-                )
-                .map((article) => (
-                  <div key={article.id}>
+        {selectedArticle ? (
+          <ArticleDetail article={selectedArticle} />
+        ) : (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: "1rem",
+            }}
+          >
+            {selectedCategory === ""
+              ? articles.map((article) => (
+                  <div
+                    key={article.id}
+                    onClick={() => handleArticleClick(article)}
+                  >
                     <Blog
                       imgUrl={article.urlImage}
                       imgAlt={article.title}
@@ -158,8 +145,29 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
                       desc={article.description}
                     />
                   </div>
-                ))}
-        </div>
+                ))
+              : articles
+                  .filter(
+                    (article) => article.category.title === selectedCategory
+                  )
+                  .map((article) => (
+                    <div
+                      key={article.id}
+                      onClick={() => handleArticleClick(article)}
+                    >
+                      <Blog
+                        imgUrl={article.urlImage}
+                        imgAlt={article.title}
+                        title={article.title}
+                        writer={article.author.username}
+                        date={article.createdAt}
+                        sharing=""
+                        desc={article.description}
+                      />
+                    </div>
+                  ))}
+          </div>
+        )}
         {selectedCategory !== "" &&
           articles.filter(
             (article) => article.category.title === selectedCategory
