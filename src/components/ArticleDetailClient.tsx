@@ -1,4 +1,5 @@
 import * as React from "react";
+import Image from "next/image";
 import { useAppSelector } from "@/lib/hooks";
 import { IArticle } from "@/lib/features/articleSlice";
 
@@ -21,12 +22,19 @@ const ArticleDetailClient: React.FunctionComponent = () => {
           day: "numeric",
         })}
       </p>
-      <img 
-        src={article.urlImage} 
-        alt={article.title} 
-        className="w-full h-auto mb-4 max-w-screen-sm mx-auto"
-      />
-      <p className="text-gray-700 text-lg mb-6 max-w-screen-sm mx-auto">{article.description}</p> // Reduced width of description
+      <div className="w-full h-auto mb-4 max-w-screen-sm mx-auto relative">
+        <Image
+          src={article.urlImage}
+          alt={article.title}
+          layout="responsive"
+          width={700}
+          height={475}
+          className="object-contain"
+        />
+      </div>
+      <p className="text-gray-700 text-lg mb-6 max-w-screen-sm mx-auto">
+        {article.description}
+      </p>
     </div>
   );
 };
