@@ -1,5 +1,6 @@
+"use client";
 import * as React from "react";
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 import axios from "axios";
 
 interface IArticle {
@@ -13,15 +14,15 @@ interface IArticle {
 }
 
 const ArticleDetail: React.FunctionComponent = () => {
-  const router = useRouter();
-  const { id } = router.query;
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
 
   const [article, setArticle] = React.useState<IArticle | null>(null);
 
   React.useEffect(() => {
     if (id) {
       axios
-        .get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/blogs/${id}`)
+        .get(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles/${id}`)
         .then((response) => {
           setArticle(response.data.data);
         })

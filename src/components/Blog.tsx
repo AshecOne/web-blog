@@ -10,7 +10,7 @@ interface IBlogProps {
   date: string;
   sharing: string;
   desc: string;
-  id: string; // Tambahkan id sebagai prop
+  id: string; 
 }
 
 const Blog: React.FunctionComponent<IBlogProps> = ({
@@ -21,7 +21,7 @@ const Blog: React.FunctionComponent<IBlogProps> = ({
   date,
   sharing,
   desc,
-  id, // Tambahkan id di sini
+  id, 
 }) => {
   const router = useRouter();
 
@@ -41,7 +41,7 @@ const Blog: React.FunctionComponent<IBlogProps> = ({
   };
 
   const handleNavigation = () => {
-    router.push(`/article/${id}`);
+    router.push(`/article?id=${id}`);
   };
 
   return (
