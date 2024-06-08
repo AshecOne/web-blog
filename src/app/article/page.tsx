@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useAppSelector } from "@/lib/hooks";
 import { IArticle } from "@/lib/features/articleSlice";
 
 interface IArticleDetailProps {
@@ -11,7 +12,7 @@ const ArticleDetail: React.FunctionComponent<IArticleDetailProps> = ({ article }
       <h1 className="text-4xl font-bold mb-4">{article.title}</h1>
       <p className="text-gray-500 text-sm mb-3">
         By {article.author.username} on{" "}
-        {new Date(article.date).toLocaleDateString("id-ID", {
+        {new Date(article.createdAt).toLocaleDateString("id-ID", {
           weekday: "long",
           year: "numeric",
           month: "long",

@@ -20,7 +20,7 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
     (state) => state.categoryReducer.selectedCategory
   );
   const selectedArticle = useAppSelector(
-    (state) => state.article.selectedArticle
+    (state) => state.articleReducer.selectedArticle
   );
   const [articles, setArticles] = React.useState<IArticle[]>([]);
   const dispatch = useAppDispatch();

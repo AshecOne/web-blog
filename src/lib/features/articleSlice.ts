@@ -12,7 +12,6 @@ export interface IArticle {
   category: {
     title: string;
   };
-  date: string;
 }
 
 interface ArticleState {
@@ -36,6 +35,7 @@ const articleSlice = createSlice({
   },
 });
 
-export const { setSelectedArticle, clearSelectedArticle } = articleSlice.actions;
+export const { setSelectedArticle, clearSelectedArticle } =
+  articleSlice.actions;
 
 export default articleSlice.reducer;
