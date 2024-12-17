@@ -96,7 +96,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
       setSearchError(null);
 
       const response = await axios.get<{ data: IArticle[] }>(
-        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/articles/search?query=${query}`
+        `https://escape-structure-film-sol.trycloudflare.com/articles/search?query=${query}`
       );
 
       if (response.data.data.length === 0) {
@@ -131,7 +131,7 @@ const Navbar: React.FunctionComponent<INavbarProps> = (props) => {
         const token = localStorage.getItem("user-token");
         if (token) {
           const response = await axios.get(
-            `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/auth/keeplogin`,
+            `https://escape-structure-film-sol.trycloudflare.com/auth/keeplogin`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }

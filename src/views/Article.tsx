@@ -36,7 +36,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
   const getArticles = async () => {
     try {
       const response = await axios.get(
-        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/blogs`
+        `https://escape-structure-film-sol.trycloudflare.com/blogs`
       );
       console.log("Fetched articles:", response.data.data);
       setArticles(response.data.data);
@@ -48,7 +48,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
   const getCategories = async () => {
     try {
       const response = await axios.get(
-        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/categories/blogs`
+        `https://escape-structure-film-sol.trycloudflare.com/categories/blogs`
       );
       console.log("Fetched categories:", response.data.data);
       setCategories(response.data.data);

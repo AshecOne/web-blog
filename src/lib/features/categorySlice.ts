@@ -40,7 +40,7 @@ export const getCategory = () => {
   return async (dispatch: any) => {
     try {
       const res = await axios.get(
-        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/categories`
+        `https://escape-structure-film-sol.trycloudflare.com/categories`
       );
       console.log("Response from middleware", res.data);
       dispatch(setCategoryAction(res.data.data));

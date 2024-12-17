@@ -48,12 +48,15 @@ const SignUp: React.FunctionComponent = () => {
         return;
       }
       const { username, email, password, role } = dataRegis;
-      const response = await axios.post(`https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/auth/regis`, {
-        username,
-        email,
-        password,
-        role,
-      });
+      const response = await axios.post(
+        `https://escape-structure-film-sol.trycloudflare.com/auth/regis`,
+        {
+          username,
+          email,
+          password,
+          role,
+        }
+      );
       console.log("Response Regis: ", response.data);
       toast.success(
         "Registration successful. You can now log in."

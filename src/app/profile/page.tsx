@@ -37,7 +37,7 @@ const Profil: React.FunctionComponent = () => {
   const handleSave = async () => {
     try {
       const response = await axios.put(
-        `https://blog-website-ashecone-25ef50f82ac6.herokuapp.com/users`,
+        `https://escape-structure-film-sol.trycloudflare.com/users`,
         editedUser,
         {
           headers: {
