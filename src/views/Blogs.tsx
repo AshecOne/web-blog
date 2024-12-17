@@ -12,6 +12,7 @@ import {
 import { setSelectedArticle, clearSelectedArticle } from "@/lib/features/articleSlice";
 import { IArticle } from "@/lib/features/articleSlice";
 import ArticleDetailClient from "@/components/ArticleDetailClient";
+import { BASE_URL } from "@/utils/helper";
 
 interface IBlogsProps {}
 
@@ -41,7 +42,7 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
   const getArticles = async () => {
     try {
       const response = await axios.get(
-        `https://escape-structure-film-sol.trycloudflare.com/articles`
+        `${BASE_URL}/articles`
       );
       console.log("Fetched articles:", response.data.data);
       setArticles(response.data.data);
@@ -58,7 +59,7 @@ const Blogs: React.FunctionComponent<IBlogsProps> = (props) => {
   const getCategory = async () => {
     try {
       const response = await axios.get(
-        `https://escape-structure-film-sol.trycloudflare.com/categories`
+        `${BASE_URL}/categories`
       );
       console.log("Fetched categories:", response.data.data);
       dispatch(setCategoryAction(response.data.data));

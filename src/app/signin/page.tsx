@@ -8,6 +8,7 @@ import { setSuccessLogin } from "@/lib/features/userSlice";
 import { useAppSelector } from "@/lib/hooks";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BASE_URL } from "@/utils/helper";
 
 const SignIn: React.FunctionComponent = () => {
   const router = useRouter();
@@ -22,7 +23,7 @@ const SignIn: React.FunctionComponent = () => {
     }
   }, [isLoggedIn, router]);
 
-  const [isForgotPassword, setIsForgotPassword] = useState(false); // Baru
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [dataInput, setDataInput] = useState({
     emailOrUsername: "",
     password: "",
@@ -36,7 +37,7 @@ const SignIn: React.FunctionComponent = () => {
         return;
       }
       const response = await axios.post(
-        `https://escape-structure-film-sol.trycloudflare.com/auth/signin`,
+        `${BASE_URL}/auth/signin`,
         {
           emailOrUsername: dataInput.emailOrUsername,
           password: dataInput.password,

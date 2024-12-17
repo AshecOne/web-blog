@@ -10,6 +10,7 @@ import { getCategory, ICategory } from "@/lib/features/categorySlice";
 import { useAppDispatch } from "@/lib/hooks";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BASE_URL } from "@/utils/helper";
 
 interface ICreateArticleProps {
   title?: string;
@@ -73,9 +74,10 @@ const CreateArticle: React.FunctionComponent = () => {
       if (Object.values(article).includes("")) {
         throw new Error("Please input all your data");
       }
+
       const token = localStorage.getItem("user-token");
       const response = await axios.post(
-        "https://escape-structure-film-sol.trycloudflare.com/users",
+        `${BASE_URL}/users`,
         {
           ...article,
           categoryId: article.category,
@@ -86,12 +88,13 @@ const CreateArticle: React.FunctionComponent = () => {
           },
         }
       );
+
       toast.success("Blog is successfully created");
       if (typeof window !== "undefined") {
         router.replace("/");
       }
     } catch (error) {
-      console.log("Error:", error);
+      console.error("Error creating blog:", error);
       toast.error("Failed to create blog.");
     }
   };

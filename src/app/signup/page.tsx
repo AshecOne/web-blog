@@ -6,6 +6,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useAppSelector } from "@/lib/hooks";
 import "react-toastify/dist/ReactToastify.css";
+import { BASE_URL } from "@/utils/helper";
 
 interface ISignUpProps {
   username?: string;
@@ -49,7 +50,7 @@ const SignUp: React.FunctionComponent = () => {
       }
       const { username, email, password, role } = dataRegis;
       const response = await axios.post(
-        `https://escape-structure-film-sol.trycloudflare.com/auth/regis`,
+        `${BASE_URL}/auth/regis`,
         {
           username,
           email,
@@ -57,10 +58,8 @@ const SignUp: React.FunctionComponent = () => {
           role,
         }
       );
-      console.log("Response Regis: ", response.data);
-      toast.success(
-        "Registration successful. You can now log in."
-      );
+      console.log("Response Regis: ", response.data);//escape-structure-film-sol.trycloudflare.com
+      https: toast.success("Registration successful. You can now log in.");
       router.replace("/signin");
     } catch (error: any) {
       console.log(error);

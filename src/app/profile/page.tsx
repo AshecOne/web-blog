@@ -8,6 +8,7 @@ import Auth from "@/components/Auth";
 import { FaUser } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BASE_URL } from "@/utils/helper";
 
 const Profil: React.FunctionComponent = () => {
   const dispatch = useAppDispatch();
@@ -37,7 +38,7 @@ const Profil: React.FunctionComponent = () => {
   const handleSave = async () => {
     try {
       const response = await axios.put(
-        `https://escape-structure-film-sol.trycloudflare.com/users`,
+        `${BASE_URL}/users`,
         editedUser,
         {
           headers: {

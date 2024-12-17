@@ -3,6 +3,7 @@ import Container from "@/components/Container";
 import Post from "@/components/Post";
 import MangaReads from "@/components/MangaReads";
 import axios from "axios";
+import { BASE_URL } from "@/utils/helper";
 
 interface IArticleProps {}
 
@@ -36,7 +37,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
   const getArticles = async () => {
     try {
       const response = await axios.get(
-        `https://escape-structure-film-sol.trycloudflare.com/blogs`
+        `${BASE_URL}/blogs`
       );
       console.log("Fetched articles:", response.data.data);
       setArticles(response.data.data);
@@ -48,7 +49,7 @@ const Article: React.FunctionComponent<IArticleProps> = (props) => {
   const getCategories = async () => {
     try {
       const response = await axios.get(
-        `https://escape-structure-film-sol.trycloudflare.com/categories/blogs`
+        `${BASE_URL}/categories/blogs`
       );
       console.log("Fetched categories:", response.data.data);
       setCategories(response.data.data);

@@ -9,6 +9,7 @@ import { useAppDispatch } from "@/lib/hooks";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ICategory } from "@/lib/features/categorySlice";
+import { BASE_URL } from "@/utils/helper";
 
 interface IManageArticleProps {}
 
@@ -51,7 +52,7 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
       try {
         const token = localStorage.getItem("user-token");
         const response = await axios.get(
-          `https://escape-structure-film-sol.trycloudflare.com/users`,
+          `${BASE_URL}/users`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -81,7 +82,7 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
       try {
         const token = localStorage.getItem("user-token");
         const response = await axios.put(
-          `https://escape-structure-film-sol.trycloudflare.com/users/${editData.id}`,
+          `${BASE_URL}/${editData.id}`,
           editData,
           {
             headers: {
@@ -112,14 +113,11 @@ const ManageArticle: React.FunctionComponent<IManageArticleProps> = (props) => {
     if (deleteId) {
       try {
         const token = localStorage.getItem("user-token");
-        await axios.delete(
-          `https://escape-structure-film-sol.trycloudflare.com/users/${deleteId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        await axios.delete(`${BASE_URL}/${deleteId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setArticles(articles.filter((article) => article.id !== deleteId));
         setDeleteId(null);
         toast.success("Article deleted successfully!");
